@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManagement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskManagement
 {
@@ -33,6 +35,9 @@ namespace TaskManagement
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ManagementContext>(options => 
+            options.UseSqlServer(Configuration.GetConnectionString("Management")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

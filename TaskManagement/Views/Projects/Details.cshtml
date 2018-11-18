@@ -1,0 +1,60 @@
+﻿@model TaskManagement.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectCreatedDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectCreatedDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDeadline)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDeadline)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectActive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectEndDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectEndDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectCreatorAccount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectCreatorAccount.AccountEmail)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
