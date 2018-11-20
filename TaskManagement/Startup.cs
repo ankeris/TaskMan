@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TaskManagement
 {
@@ -27,6 +27,9 @@ namespace TaskManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add Entity Framework (EF)
+            services.AddDbContext<ManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Management")));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -34,14 +37,18 @@ namespace TaskManagement
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options => { options.LoginPath = "/Login"; });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            // Add Entity Framework (EF)
-            services.AddDbContext<ManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Management")));
-
-            // Add Identity Framework (IF)
-            services.AddIdentity<Account, UserRole>().AddEntityFrameworkStores<ManagementContext>().AddDefaultTokenProviders();
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AllowAnonymousToPage("/Login");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,21 +64,21 @@ namespace TaskManagement
                 app.UseHsts();
             }
             // Identity
-            app.UseStatusCodePages();
-            app.UseDeveloperExceptionPage();
             app.UseAuthentication();
             app.UseStaticFiles();
+
             // The rest
-            app.UseMvcWithDefaultRoute();
+            // app.UseMvcWithDefaultRoute();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //});
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace TaskManagement.Models
 {
-    public partial class Account : IdentityUser
+    public partial class Account
     {
+
         public Account()
         {
             Comment = new HashSet<Comment>();
