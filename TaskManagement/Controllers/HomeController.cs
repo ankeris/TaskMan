@@ -34,6 +34,8 @@ namespace TaskManagement.Controllers
             return View();
         }
 
+        public ViewResult Users() => View(new Dictionary<string, object> {["Placeholder"] = "Placeholder" });
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

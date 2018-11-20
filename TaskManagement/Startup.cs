@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TaskManagement.Models;
 using Microsoft.EntityFrameworkCore;
+using TaskManagement.Models;
 
 namespace TaskManagement
 {
@@ -36,8 +37,11 @@ namespace TaskManagement
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<ManagementContext>(options => 
-            options.UseSqlServer(Configuration.GetConnectionString("Management")));
+            // Add Entity Framework (EF)
+            services.AddDbContext<ManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Management")));
+
+            // Add Identity Framework (IF)
+            services.AddIdentity<Account, UserRole>().AddEntityFrameworkStores<ManagementContext>().AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,9 +56,14 @@ namespace TaskManagement
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            // Identity
+            app.UseStatusCodePages();
+            app.UseDeveloperExceptionPage();
+            app.UseAuthentication();
             app.UseStaticFiles();
+            // The rest
+            app.UseMvcWithDefaultRoute();
+            app.UseHttpsRedirection();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
