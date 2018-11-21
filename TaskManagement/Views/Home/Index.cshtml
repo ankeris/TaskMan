@@ -1,17 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model TaskManagement.Models.ViewModels.LoginViewModel
+@model TaskManagement.Models.Account
 
 <div class="jumbotron">
-    <h1>Hello @(User.Identity.IsAuthenticated ? User.Identity.Name : "World")</h1>
-    <p>Login using form below:</p>
-    <form asp-controller="Home" asp-action="Auth" method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        Username: <input asp-for="@Model.Username" value="username" /><br />
-        Password: <input asp-for="@Model.Password" value="password" /><br />
-        Remember me: <input asp-for="@Model.RememberMe" type="checkbox" /><br />
-        <input type="submit" value="Login" />
+    <h3>Login Page</h3>
+    @ViewBag.error
+    <form asp-controller="Home" asp-action="Login" method="post">
+        Email <br />
+        <input asp-for="AccountEmail" type="text" />
+        <br />
+        Password <br />
+        <input asp-for="AccountPassword" type="password">
+        <br />
+        <button type="submit" class="btn btn-default">Login</button>
     </form>
 </div>
 

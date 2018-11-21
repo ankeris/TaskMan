@@ -20,4 +20,4 @@ namespace TaskManagement.Models.ViewModels
 
             public bool RememberMe { get; set; }
     }
-}  
+}

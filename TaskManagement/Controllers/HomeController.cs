@@ -1,56 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using TaskManagement.Models;
-
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskManagement.Controllers
 {
+    [Route("Home")]
     public class HomeController : Controller
     {
+        [Route("")]
+        [Route("index")]
+        [Route("~/")]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+        private readonly ManagementContext _context;
 
-            return View();
+        public HomeController(ManagementContext context)
+        {
+            _context = context;
+        }
+
+        [Route("Login")]
+        [HttpPost]
+        public IActionResult Login(Account AccData)
+        {
+            var account = _context.Account.Where(u => u.AccountEmail == AccData.AccountEmail).FirstOrDefault();
+            // && u.AccountPassword == AccData.AccountPassword
+            Console.WriteLine(AccData.AccountEmail);
+            if (account != null)
+            {
+                HttpContext.Session.SetString("AccID", account.AccountId.ToString());
+                HttpContext.Session.SetString("Username", account.AccountUserFirstName);
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+                return View("LoggedIn");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Username or password is wrong.");
+                ViewBag.error = "Invalid Account";
+                return View("Index");
+            }
+        }
+
+        [Route("logout")]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("Username");
+            return RedirectToAction("Index");
         }
 
         public IActionResult LoggedIn()
         {
-            ViewData["Message"] = "Welcome, you have logged in";
-
-            return View();
-        }
-
-        public IActionResult Auth(string Username, string Password)
-        {
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine(Username);
-            Console.Write(Password);
-            Console.WriteLine("--------------------------------------");
-            return View();
-        }
-
-        public ViewResult Users() => View(new Dictionary<string, object> {["Placeholder"] = "Placeholder" });
-        
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("LoggedIn");
         }
     }
 }

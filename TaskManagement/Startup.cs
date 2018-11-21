@@ -37,6 +37,8 @@ namespace TaskManagement
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSession();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -65,20 +67,19 @@ namespace TaskManagement
             }
             // Identity
             app.UseAuthentication();
+            app.UseSession();
             app.UseStaticFiles();
-
+            
             // The rest
-            // app.UseMvcWithDefaultRoute();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
 
-            app.UseMvcWithDefaultRoute();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
