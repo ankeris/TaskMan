@@ -5,7 +5,6 @@ namespace TaskManagement.Models
 {
     public partial class Account
     {
-
         public Account()
         {
             Comment = new HashSet<Comment>();
@@ -23,7 +22,7 @@ namespace TaskManagement.Models
         public DateTime? AccountUserBirthDate { get; set; }
         public int AccountRoleId { get; set; }
         public DateTime AccountRoleLastChangeDateTime { get; set; }
-        public DateTime AccountUserCompanyLastChangeDateTime { get; set; }
+        public DateTime? AccountUserCompanyLastChangeDateTime { get; set; }
         public int? AccountUserCompanyId { get; set; }
 
         public UserRole AccountRole { get; set; }

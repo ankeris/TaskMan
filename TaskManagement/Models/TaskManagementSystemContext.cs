@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace TaskManagement.Models
 {
-    public partial class ManagementContext : DbContext
+    public partial class TaskManagementSystemContext : DbContext
     {
-        public ManagementContext()
+        public TaskManagementSystemContext()
         {
         }
 
-        public ManagementContext(DbContextOptions<ManagementContext> options)
+        public TaskManagementSystemContext(DbContextOptions<TaskManagementSystemContext> options)
             : base(options)
         {
         }
@@ -28,7 +28,7 @@ namespace TaskManagement.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Management;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TaskManagementSystem;Trusted_Connection=True;");
             }
         }
 
@@ -79,12 +79,12 @@ namespace TaskManagement.Models
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.AccountRoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Account__Account__25869641");
+                    .HasConstraintName("FK__Account__Account__398D8EEE");
 
                 entity.HasOne(d => d.AccountUserCompany)
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.AccountUserCompanyId)
-                    .HasConstraintName("FK__Account__Account__29572725");
+                    .HasConstraintName("FK__Account__Account__3D5E1FD2");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -104,17 +104,17 @@ namespace TaskManagement.Models
                 entity.HasOne(d => d.CommentAccount)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentAccountId)
-                    .HasConstraintName("FK__Comment__Comment__37A5467C");
+                    .HasConstraintName("FK__Comment__Comment__4BAC3F29");
 
                 entity.HasOne(d => d.CommentProject)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentProjectId)
-                    .HasConstraintName("FK__Comment__Comment__38996AB5");
+                    .HasConstraintName("FK__Comment__Comment__4CA06362");
 
                 entity.HasOne(d => d.CommentTask)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentTaskId)
-                    .HasConstraintName("FK__Comment__Comment__398D8EEE");
+                    .HasConstraintName("FK__Comment__Comment__34C8D9D1");
             });
 
             modelBuilder.Entity<Company>(entity =>
@@ -139,8 +139,7 @@ namespace TaskManagement.Models
                 entity.HasOne(d => d.CompanyCreatorAccount)
                     .WithMany(p => p.Company)
                     .HasForeignKey(d => d.CompanyCreatorAccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Company__Company__286302EC");
+                    .HasConstraintName("FK__Company__Company__3C69FB99");
             });
 
             modelBuilder.Entity<JAccountTask>(entity =>
@@ -157,13 +156,13 @@ namespace TaskManagement.Models
                     .WithMany(p => p.JAccountTask)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__J_Account__Accou__33D4B598");
+                    .HasConstraintName("FK__J_Account__Accou__47DBAE45");
 
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.JAccountTask)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__J_Account__Task___34C8D9D1");
+                    .HasConstraintName("FK__J_Account__Task___48CFD27E");
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -198,7 +197,7 @@ namespace TaskManagement.Models
                 entity.HasOne(d => d.ProjectCreatorAccount)
                     .WithMany(p => p.Project)
                     .HasForeignKey(d => d.ProjectCreatorAccountId)
-                    .HasConstraintName("FK__Project__Project__2C3393D0");
+                    .HasConstraintName("FK__Project__Project__403A8C7D");
             });
 
             modelBuilder.Entity<Task>(entity =>
@@ -208,6 +207,8 @@ namespace TaskManagement.Models
                 entity.Property(e => e.TaskCreatedDateTime)
                     .HasColumnName("Task_Created_DateTime")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.TaskCreatorAccountId).HasColumnName("Task_Creator_Account_ID");
 
                 entity.Property(e => e.TaskDescription)
                     .HasColumnName("Task_Description")
@@ -230,7 +231,7 @@ namespace TaskManagement.Models
                     .WithMany(p => p.Task)
                     .HasForeignKey(d => d.TaskTaskStateId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Task__Task_TaskS__30F848ED");
+                    .HasConstraintName("FK__Task__Task_TaskS__44FF419A");
             });
 
             modelBuilder.Entity<TaskState>(entity =>

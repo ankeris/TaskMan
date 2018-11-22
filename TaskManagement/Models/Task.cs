@@ -14,6 +14,7 @@ namespace TaskManagement.Models
         public int TaskId { get; set; }
         public string TaskName { get; set; }
         public DateTime TaskCreatedDateTime { get; set; }
+        public int TaskCreatorAccountId { get; set; }
         public string TaskDescription { get; set; }
         public int TaskProjectId { get; set; }
         public int TaskTaskStateId { get; set; }

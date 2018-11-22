@@ -20,9 +20,9 @@ namespace TaskManagement.Controllers
             return View();
         }
 
-        private readonly ManagementContext _context;
+        private readonly TaskManagementSystemContext _context;
 
-        public HomeController(ManagementContext context)
+        public HomeController(TaskManagementSystemContext context)
         {
             _context = context;
         }

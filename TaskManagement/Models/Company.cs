@@ -14,7 +14,7 @@ namespace TaskManagement.Models
         public string CompanyName { get; set; }
         public DateTime CompanyCreatedDateTime { get; set; }
         public string CompanyInfo { get; set; }
-        public int CompanyCreatorAccountId { get; set; }
+        public int? CompanyCreatorAccountId { get; set; }
 
         public Account CompanyCreatorAccount { get; set; }
         public ICollection<Account> Account { get; set; }
