@@ -35,8 +35,11 @@ namespace TaskManagement.Controllers
             // && u.AccountPassword == AccData.AccountPassword
             if (account != null)
             {
+                // Stores few account details into sessions
                 HttpContext.Session.SetString("AccID", account.AccountId.ToString());
                 HttpContext.Session.SetString("Username", account.AccountUserFirstName);
+                HttpContext.Session.SetInt32("RoleID", account.AccountRoleId);
+
                 ViewBag.Username = HttpContext.Session.GetString("Username");
                 return RedirectToAction("Index", "Projects", new { area = "Employee" });
             }

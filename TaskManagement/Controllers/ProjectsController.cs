@@ -25,12 +25,12 @@ namespace TaskManagement.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (Int32.TryParse(HttpContext.Session.GetString("AccID"), out int val))
             {
-                this.AccName = HttpContext.Session.GetString("Username");
-                this.AccID = val;
+                AccName = HttpContext.Session.GetString("Username");
+                AccID = val;
             }
             else
             {
@@ -39,25 +39,24 @@ namespace TaskManagement.Controllers
             }
             if (HttpContext.Session.GetString("AccID") != null)
             {
-                var managementContext = _context.Project.Include(p => p.ProjectCreatorAccount);
-
-                SqlParameter id = new SqlParameter("@ID", HttpContext.Session.GetString("AccID"));
-                //List<Project> projects = _context.Project.FromSql<Project>("exec GetProjectsForUser @ID", id).ToList();
-
-                //model = new ProjectsViewModel
-                //{
-                //    // Display projects that belong to Company that belongs to Account
-                //    // Projects = _context.Project.Where(), // Maybe stored procedure that returns list of projects depending on UserID
-                //    // CompanyName = //company name (Maybe procedure that returns company name from User ID)
-                //};
-                return View(await managementContext.ToListAsync());
+                //var managementContext = _context.Project.Include(p => p.ProjectCreatorAccount);
+                
+                SqlParameter userid = new SqlParameter("@p_account_id", AccID);
+                List<Project> projects = _context.Project.FromSql<Project>("exec ProjectList @p_account_id", userid).ToList();
+                List<Company> company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
+                // Constructor for Viewmodel
+                model = new ProjectsViewModel
+                {
+                    Projects = projects,
+                    Company = company[0]
+                };
+                return View(model);
             }
             else
             {
                 return RedirectToAction("Index", "Home", new { area = "Unlogged" });
             }
         }
-    
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)

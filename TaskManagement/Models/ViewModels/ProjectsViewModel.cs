@@ -7,6 +7,6 @@ namespace TaskManagement.Models.ViewModels
     public class ProjectsViewModel
     {
         public IEnumerable<Project> Projects { get; set; }
-        public string CompanyName { get; set; }
+        public Company Company { get; set; }
     }
 }
