@@ -27,12 +27,22 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TaskManagement</a>
-                <a asp-controller="Home" asp-action="Logout">Logout</a>
             </div>
             <div class="navbar-collapse collapse">
+                @if (@Context.Session.GetString("Username") != null)
+                {
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Logout" style="color: red">Logout</a></li>
                 </ul>
+                    <span class="navbar-text">
+                        <small>(Logged in as @Context.Session.GetString("Username"))</small>
+                    </span>
+                } else {
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>

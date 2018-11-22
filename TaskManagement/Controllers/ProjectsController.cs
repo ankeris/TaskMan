@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Models;
+using TaskManagement.Models.ViewModels;
 
 namespace TaskManagement.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ManagementContext _context;
+        private int AccID { get; set; }
+        private string AccName { get; set; }
+        ProjectsViewModel model = new ProjectsViewModel();
 
         public ProjectsController(ManagementContext context)
         {
@@ -21,8 +26,31 @@ namespace TaskManagement.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var managementContext = _context.Project.Include(p => p.ProjectCreatorAccount);
+            if (Int32.TryParse(HttpContext.Session.GetString("AccID"), out int val))
+            {
+                this.AccName = HttpContext.Session.GetString("Username");
+                this.AccID = val;
+            }
+            else
+            {
+                ViewBag.error = "Account is inaccessible";
+                return RedirectToAction("Index", "Home", new { area = "Unlogged" });
+            }
+            if (HttpContext.Session.GetString("AccID") != null)
+            {
+                var managementContext = _context.Project.Include(p => p.ProjectCreatorAccount);
+                model = new ProjectsViewModel
+                {
+                    // Display projects that belong to Company that belongs to Account
+                    // Projects = _context.Project.Where(), // Maybe stored procedure that returns list of projects depending on UserID
+                    // CompanyName = //company name (Maybe procedure that returns company name from User ID)
+                };
             return View(await managementContext.ToListAsync());
+        }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { area = "Unlogged" });
+            }
         }
 
         // GET: Projects/Details/5

@@ -33,13 +33,12 @@ namespace TaskManagement.Controllers
         {
             var account = _context.Account.Where(u => u.AccountEmail == AccData.AccountEmail).FirstOrDefault();
             // && u.AccountPassword == AccData.AccountPassword
-            Console.WriteLine(AccData.AccountEmail);
             if (account != null)
             {
                 HttpContext.Session.SetString("AccID", account.AccountId.ToString());
                 HttpContext.Session.SetString("Username", account.AccountUserFirstName);
                 ViewBag.Username = HttpContext.Session.GetString("Username");
-                return View("LoggedIn");
+                return RedirectToAction("Index", "Projects", new { area = "Employee" });
             }
             else
             {
@@ -54,6 +53,7 @@ namespace TaskManagement.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("AccID");
             return RedirectToAction("Index");
         }
 
