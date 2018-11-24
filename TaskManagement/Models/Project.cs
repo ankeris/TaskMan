@@ -21,5 +21,9 @@ namespace TaskManagement.Models
 
         public Account ProjectCreatorAccount { get; set; }
         public ICollection<Comment> Comment { get; set; }
+
+        public int TotalTasks;
+        public int DoneTasks;
+        public int ProgressBar { get { return (100 / TotalTasks * DoneTasks); } }
     }
 }

@@ -37,13 +37,32 @@ namespace TaskManagement.Controllers
                 ViewBag.error = "Account is inaccessible";
                 return RedirectToAction("Index", "Home", new { area = "Unlogged" });
             }
+            // User Login successful!
             if (HttpContext.Session.GetString("AccID") != null)
             {
-                //var managementContext = _context.Project.Include(p => p.ProjectCreatorAccount);
-                
                 SqlParameter userid = new SqlParameter("@p_account_id", AccID);
                 List<Project> projects = _context.Project.FromSql<Project>("exec ProjectList @p_account_id", userid).ToList();
                 List<Company> company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
+                // Count all "Done" tasks and set DoneTasks object property
+                projects.ForEach(
+                    prj => prj.DoneTasks = 
+                    _context.Task
+                    .Where(tsk => 
+                    tsk.TaskProjectId == prj.ProjectId 
+                    && 
+                    tsk.TaskTaskStateId == 6)
+                    .Count());
+                // Count sum of all Tasks and set TotalTasks object property
+                projects.ForEach(
+                    prj => prj.TotalTasks = 
+                    _context.Task
+                    .Where(tsk => 
+                    tsk.TaskProjectId == prj.ProjectId)
+                    .Count());
+
+                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - ");
+                projects.ForEach(p => Console.WriteLine($"{p.ProjectName}. Total Tasks: {p.TotalTasks}, Done: {p.DoneTasks}"));
+                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - ");
                 // Constructor for Viewmodel
                 model = new ProjectsViewModel
                 {
