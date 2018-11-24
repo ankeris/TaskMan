@@ -45,18 +45,18 @@ namespace TaskManagement.Controllers
                 List<Company> company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
                 // Count all "Done" tasks and set DoneTasks object property
                 projects.ForEach(
-                    prj => prj.DoneTasks = 
+                    prj => prj.DoneTasks =
                     _context.Task
-                    .Where(tsk => 
-                    tsk.TaskProjectId == prj.ProjectId 
-                    && 
+                    .Where(tsk =>
+                    tsk.TaskProjectId == prj.ProjectId
+                    &&
                     tsk.TaskTaskStateId == 6)
                     .Count());
                 // Count sum of all Tasks and set TotalTasks object property
                 projects.ForEach(
-                    prj => prj.TotalTasks = 
+                    prj => prj.TotalTasks =
                     _context.Task
-                    .Where(tsk => 
+                    .Where(tsk =>
                     tsk.TaskProjectId == prj.ProjectId)
                     .Count());
 
