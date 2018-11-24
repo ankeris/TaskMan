@@ -24,6 +24,6 @@ namespace TaskManagement.Models
 
         public int TotalTasks;
         public int DoneTasks;
-        public int ProgressBar { get { return (100 / TotalTasks * DoneTasks); } }
+        public int ProgressBar { get { return (DoneTasks * 100 / TotalTasks); } }
     }
 }

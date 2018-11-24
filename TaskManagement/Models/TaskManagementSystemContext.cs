@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace TaskManagement.Models
 {
@@ -10,9 +11,12 @@ namespace TaskManagement.Models
         {
         }
 
-        public TaskManagementSystemContext(DbContextOptions<TaskManagementSystemContext> options)
+        public IConfiguration Configuration { get; }
+
+        public TaskManagementSystemContext(DbContextOptions<TaskManagementSystemContext> options, IConfiguration configuration)
             : base(options)
         {
+            Configuration = configuration;
         }
 
         public virtual DbSet<Account> Account { get; set; }
@@ -28,7 +32,7 @@ namespace TaskManagement.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TaskManagementSystem;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Management"));
             }
         }
 
