@@ -1,0 +1,17 @@
+﻿.split-window {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    .window__left {
+        flex-basis: 50%;
+
+        .task-box {
+            width: 100%;
+        }
+    }
+
+    .window__right {
+        flex-basis: 50%;
+    }
+}
