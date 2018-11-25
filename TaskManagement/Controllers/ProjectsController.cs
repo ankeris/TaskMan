@@ -18,6 +18,7 @@ namespace TaskManagement.Controllers
         private readonly TaskManagementSystemContext _context;
         private int AccID { get; set; }
         private string AccName { get; set; }
+        private string DeletedMessage { get; set; }
 
         public List<Project> projects = new List<Project>();
         public List<Company> company = new List<Company>();
@@ -81,19 +82,23 @@ namespace TaskManagement.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id, int total, int done)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            if (HttpContext.Session.GetString("DeletedMessage") != null)
+            {
+                DeletedMessage = HttpContext.Session.GetString("DeletedMessage");
+                HttpContext.Session.Remove("DeletedMessage");
+            }
+            ViewBag.DeletedMessage = DeletedMessage;
+
             var project = await _context.Project
                 .Include(p => p.ProjectCreatorAccount)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
-
-            project.TotalTasks = total;
-            project.DoneTasks = done;
 
             //returns the first occurrence within the entire List
             //Project project = projects.Find(x => x.ProjectId == id);

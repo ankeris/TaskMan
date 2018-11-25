@@ -5,6 +5,10 @@
 }
 
 <h2>Details</h2>
+@if (@ViewBag.DeletedMessage != null)
+{
+    <h1>@ViewBag.DeletedMessage</h1>
+}
 <a asp-action="Index">Go back</a>
 <section class="content-section split-window">
     <div class="split-window window__left">
@@ -13,15 +17,14 @@
             @{int i = 1;}
             @foreach (TaskManagement.Models.Task t in Model.Tasks)
             {
-                <li><span>@i </span><span>@t.TaskName</span></li>
+                <li><span>@i </span><span>@t.TaskName</span> <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@t.TaskId"><b>x</b></a></li>
                 i++;
             }
         </ul>
     </div>
     <div class="split-window window__right">
         <ul class="information-box">
-            <li>Progress: @Model.Project.DoneTasks Done out of @Model.Project.TotalTasks</li>
-            <li>----------</li>
+            <li>Progress: @Model.Project.DoneTasks task(s) done out of @Model.Project.TotalTasks</li>
             <li>Deadline: @Model.Project.ProjectDeadline</li>
             <li>Description:</li>
             <li>Comments</li>
@@ -29,5 +32,6 @@
     </div>
 </section>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |
+    <a asp-controller="Tasks" asp-action="Create" asp-route-id="@Model.Project.ProjectId">Add Task</a>
 </div>
