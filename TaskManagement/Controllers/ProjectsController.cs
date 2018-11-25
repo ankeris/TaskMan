@@ -14,10 +14,16 @@ namespace TaskManagement.Controllers
 {
     public class ProjectsController : Controller
     {
+        // Global Variables for this Controller
         private readonly TaskManagementSystemContext _context;
         private int AccID { get; set; }
         private string AccName { get; set; }
-        ProjectsViewModel model = new ProjectsViewModel();
+
+        public List<Project> projects = new List<Project>();
+        public List<Company> company = new List<Company>();
+
+        ProjectsPageViewModel projects_model = new ProjectsPageViewModel();
+        ProjectDetailsViewModel details_model = new ProjectDetailsViewModel();
 
         public ProjectsController(TaskManagementSystemContext context)
         {
@@ -41,8 +47,8 @@ namespace TaskManagement.Controllers
             if (HttpContext.Session.GetString("AccID") != null)
             {
                 SqlParameter userid = new SqlParameter("@p_account_id", AccID);
-                List<Project> projects = _context.Project.FromSql<Project>("exec ProjectList @p_account_id", userid).ToList();
-                List<Company> company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
+                projects = _context.Project.FromSql<Project>("exec ProjectList @p_account_id", userid).ToList();
+                company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
                 // Count all "Done" tasks and set DoneTasks object property
                 projects.ForEach(
                     prj => prj.DoneTasks =
@@ -60,16 +66,13 @@ namespace TaskManagement.Controllers
                     tsk.TaskProjectId == prj.ProjectId)
                     .Count());
 
-                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - ");
-                projects.ForEach(p => Console.WriteLine($"{p.ProjectName}. Total Tasks: {p.TotalTasks}, Done: {p.DoneTasks}"));
-                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - ");
                 // Constructor for Viewmodel
-                model = new ProjectsViewModel
+                projects_model = new ProjectsPageViewModel
                 {
                     Projects = projects,
                     Company = company[0]
                 };
-                return View(model);
+                return View(projects_model);
             }
             else
             {
@@ -78,7 +81,7 @@ namespace TaskManagement.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int total, int done)
         {
             if (id == null)
             {
@@ -88,12 +91,27 @@ namespace TaskManagement.Controllers
             var project = await _context.Project
                 .Include(p => p.ProjectCreatorAccount)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            project.TotalTasks = total;
+            project.DoneTasks = done;
+
+            //returns the first occurrence within the entire List
+            //Project project = projects.Find(x => x.ProjectId == id);
+
+            List<Models.Task> tasks = await _context.Task
+                .Where(t => t.TaskProjectId == id).ToListAsync();
+
+            details_model = new ProjectDetailsViewModel
+            {
+                Project = project,
+                Tasks = tasks
+            };
             if (project == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(details_model);
         }
 
         // GET: Projects/Create

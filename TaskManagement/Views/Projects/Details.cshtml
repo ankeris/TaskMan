@@ -1,4 +1,4 @@
-﻿@model TaskManagement.Models.Project
+﻿@model ProjectDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,24 +8,26 @@
 <a asp-action="Index">Go back</a>
 <section class="content-section split-window">
     <div class="split-window window__left">
-        <h4>@Model.ProjectName</h4>
+        <h4>@Model.Project.ProjectName</h4>
         <ul class="task-box">
-            <li>Task 1</li>
-            <li>Task 2</li>
-            <li>Task 3</li>
-            <li>Task 4</li>
-            <li>Task 5</li>
+            @{int i = 1;}
+            @foreach (TaskManagement.Models.Task t in Model.Tasks)
+            {
+                <li><span>@i </span><span>@t.TaskName</span></li>
+                i++;
+            }
         </ul>
     </div>
     <div class="split-window window__right">
         <ul class="information-box">
-            <li>Progress:</li>
+            <li>Progress: @Model.Project.DoneTasks Done out of @Model.Project.TotalTasks</li>
             <li>----------</li>
-            <li>Deadline: @Model.ProjectDeadline</li>
+            <li>Deadline: @Model.Project.ProjectDeadline</li>
+            <li>Description:</li>
             <li>Comments</li>
         </ul>
     </div>
 </section>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a>
 </div>

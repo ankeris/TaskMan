@@ -1,4 +1,4 @@
-﻿@model ProjectsViewModel
+﻿@model ProjectsPageViewModel
 
 <h2>@Model.Company.CompanyName</h2>
 
@@ -39,37 +39,40 @@
     <tbody>
         @foreach (var item in Model.Projects)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectCreatedDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectDeadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectEndDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectCreatorAccount.AccountEmail)
-            </td>
-            <td>
-                @item.ProgressBar %
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectCreatedDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectDeadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectEndDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectCreatorAccount.AccountEmail)
+                </td>
+                <td>
+                    @item.ProgressBar %
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                    <a asp-action="Details"
+                       asp-route-id="@item.ProjectId"
+                       asp-route-total="@item.TotalTasks"
+                       asp-route-done="@item.DoneTasks">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
