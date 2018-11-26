@@ -5,6 +5,7 @@
 
     .window__left {
         flex-basis: 50%;
+        flex-direction: column;
 
         .task-box {
             width: 100%;
@@ -13,5 +14,6 @@
 
     .window__right {
         flex-basis: 50%;
+        flex-direction: column;
     }
 }

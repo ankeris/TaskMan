@@ -7,12 +7,14 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .split-window .window__left {
   flex-basis: 50%;
+  flex-direction: column;
 }
 .split-window .window__left .task-box {
   width: 100%;
 }
 .split-window .window__right {
   flex-basis: 50%;
+  flex-direction: column;
 }
 
 body {

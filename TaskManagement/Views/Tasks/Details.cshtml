@@ -1,0 +1,32 @@
+﻿@model TaskDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+<a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId">Back to List</a>
+<section class="content-section split-window">
+    <div class="split-window window__left">
+        <h4>@Model.Task.TaskName</h4>
+        <h5>Description:</h5>
+        <div>@Model.Task.TaskDescription</div>
+    </div>
+    <div class="split-window window__right">
+        State: @Model.Task.TaskTaskState<br />
+        Assignees:
+        <ul>
+            @foreach (Account acc in Model.Assignees)
+            {
+                <li>@acc.AccountUserFirstName @acc.AccountUserLastName</li>
+            }
+        </ul>
+        Comments:
+        <ul>
+            @foreach (Comment comm in Model.Comments)
+            {
+                <li></li>
+            }
+        </ul>
+    </div>
+</section>

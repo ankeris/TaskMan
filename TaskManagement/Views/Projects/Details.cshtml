@@ -17,7 +17,19 @@
             @{int i = 1;}
             @foreach (TaskManagement.Models.Task t in Model.Tasks)
             {
-                <li><span>@i </span><span>@t.TaskName</span> <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@t.TaskId"><b>x</b></a></li>
+                <li>
+                    <span>@i </span>
+                    <span>
+                        <a asp-controller="Tasks"
+                           asp-action="Details"
+                           asp-route-id="@t.TaskId">@t.TaskName</a>
+                    </span>
+                    <a asp-controller="Tasks"
+                       asp-action="Delete"
+                       asp-route-id="@t.TaskId">
+                        <b>[x]</b>
+                    </a>
+                </li>
                 i++;
             }
         </ul>
@@ -32,6 +44,6 @@
     </div>
 </section>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |*@
     <a asp-controller="Tasks" asp-action="Create" asp-route-id="@Model.Project.ProjectId">Add Task</a>
 </div>
