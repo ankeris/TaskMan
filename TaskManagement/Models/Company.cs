@@ -7,16 +7,14 @@ namespace TaskManagement.Models
     {
         public Company()
         {
-            Account = new HashSet<Account>();
+            JAccountCompany = new HashSet<JAccountCompany>();
         }
 
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public DateTime CompanyCreatedDateTime { get; set; }
         public string CompanyInfo { get; set; }
-        public int? CompanyCreatorAccountId { get; set; }
 
-        public Account CompanyCreatorAccount { get; set; }
-        public ICollection<Account> Account { get; set; }
+        public ICollection<JAccountCompany> JAccountCompany { get; set; }
     }
 }

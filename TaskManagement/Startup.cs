@@ -25,7 +25,7 @@ namespace TaskManagement
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Entity Framework (EF)
-            services.AddDbContext<TaskManagementSystemContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Management")));
+            services.AddDbContext<TaskManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Management")));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -66,7 +66,7 @@ namespace TaskManagement
             app.UseAuthentication();
             app.UseSession();
             app.UseStaticFiles();
-            
+
             // The rest
             app.UseHttpsRedirection();
             app.UseCookiePolicy();

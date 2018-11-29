@@ -15,8 +15,8 @@ namespace TaskManagement.Controllers
     public class ProjectsController : Controller
     {
         // Global Variables for this Controller
-        private readonly TaskManagementSystemContext _context;
-        private int AccID { get; set; }
+        private readonly TaskManagementContext _context;
+        private int? AccID { get; set; }
         private string AccName { get; set; }
         private string DeletedMessage { get; set; }
 
@@ -26,7 +26,7 @@ namespace TaskManagement.Controllers
         ProjectsPageViewModel projects_model = new ProjectsPageViewModel();
         ProjectDetailsViewModel details_model = new ProjectDetailsViewModel();
 
-        public ProjectsController(TaskManagementSystemContext context)
+        public ProjectsController(TaskManagementContext context)
         {
             _context = context;
         }
@@ -34,10 +34,10 @@ namespace TaskManagement.Controllers
         // GET: Projects
         public IActionResult Index()
         {
-            if (Int32.TryParse(HttpContext.Session.GetString("AccID"), out int val))
+            if (HttpContext.Session.GetInt32("AccID") != null)
             {
                 AccName = HttpContext.Session.GetString("Username");
-                AccID = val;
+                AccID = HttpContext.Session.GetInt32("AccID");
             }
             else
             {
@@ -48,7 +48,14 @@ namespace TaskManagement.Controllers
             if (HttpContext.Session.GetString("AccID") != null)
             {
                 SqlParameter userid = new SqlParameter("@p_account_id", AccID);
-                projects = _context.Project.FromSql<Project>("exec ProjectList @p_account_id", userid).ToList();
+                try
+                {
+                    projects = _context.Project.FromSql("exec ProjectList @p_account_id", userid).ToList();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Log Exception: " + ex.Message);
+                }
                 company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
                 // Count all "Done" tasks and set DoneTasks object property
                 projects.ForEach(

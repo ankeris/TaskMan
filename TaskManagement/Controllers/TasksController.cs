@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +14,10 @@ namespace TaskManagement.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly TaskManagementSystemContext _context;
+        private readonly TaskManagementContext _context;
         TaskDetailsViewModel task_details_model = new TaskDetailsViewModel();
 
-        public TasksController(TaskManagementSystemContext context)
+        public TasksController(TaskManagementContext context)
         {
             _context = context;
         }
@@ -37,20 +38,33 @@ namespace TaskManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskId,TaskName,TaskCreatedDateTime,TaskDescription,TaskCreatorAccountId,TaskTaskStateId,TaskProjectId,TaskTaskStateLastChangeDateTime")] Models.Task task, [Bind("AccountId,TaskId")] JAccountTask junction, int ProjectID)
+        public async Task<IActionResult> Create([Bind("TaskName,TaskDescription")] Models.Task task, [Bind("AccountId,TaskId")] JAccountTask junction, int ProjectID)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(task);
+                //task.TaskProjectId = ProjectID;
+                //_context.Add(task);
+                //await _context.SaveChangesAsync();
+                //junction.TaskId = task.TaskId;
+                //junction.UserAssignedDateTime = DateTime.Now;
+                //_context.Add(junction);
+                //await _context.SaveChangesAsync();
+                _context.Database.ExecuteSqlCommand("CreateTask " +
+                    "@p_task_name, " +
+                    "@p_task_description, " +
+                    "@p_project_id, " +
+                    "@p_account_id, " +
+                    "@p_assigned_employee_id",
+                    new SqlParameter("@p_task_name", task.TaskName),
+                    new SqlParameter("@p_task_description", task.TaskDescription),
+                    new SqlParameter("@p_project_id", ProjectID),
+                    new SqlParameter("@p_account_id", HttpContext.Session.GetInt32("AccID")),
+                    new SqlParameter("@p_assigned_employee_id", junction.AccountId));
                 await _context.SaveChangesAsync();
-                junction.TaskId = task.TaskId;
-                _context.Add(junction);
-                await _context.SaveChangesAsync();
-
                 return RedirectToAction("Details", "Projects", new { id = ProjectID });
             }
             ViewData["TaskCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
-            ViewData["ProjectCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail", task.TaskCreatorAccountId);
+            ViewData["ProjectCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
             return View(task);
         }
 

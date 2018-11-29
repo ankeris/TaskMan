@@ -8,7 +8,7 @@ namespace TaskManagement.Models
         public Account()
         {
             Comment = new HashSet<Comment>();
-            Company = new HashSet<Company>();
+            JAccountCompany = new HashSet<JAccountCompany>();
             JAccountTask = new HashSet<JAccountTask>();
             Project = new HashSet<Project>();
         }
@@ -22,13 +22,10 @@ namespace TaskManagement.Models
         public DateTime? AccountUserBirthDate { get; set; }
         public int AccountRoleId { get; set; }
         public DateTime AccountRoleLastChangeDateTime { get; set; }
-        public DateTime? AccountUserCompanyLastChangeDateTime { get; set; }
-        public int? AccountUserCompanyId { get; set; }
 
         public UserRole AccountRole { get; set; }
-        public Company AccountUserCompany { get; set; }
         public ICollection<Comment> Comment { get; set; }
-        public ICollection<Company> Company { get; set; }
+        public ICollection<JAccountCompany> JAccountCompany { get; set; }
         public ICollection<JAccountTask> JAccountTask { get; set; }
         public ICollection<Project> Project { get; set; }
     }

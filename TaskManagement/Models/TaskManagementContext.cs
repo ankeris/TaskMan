@@ -5,15 +5,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace TaskManagement.Models
 {
-    public partial class TaskManagementSystemContext : DbContext
+    public partial class TaskManagementContext : DbContext
     {
-        public TaskManagementSystemContext()
+        public TaskManagementContext()
         {
         }
 
         public IConfiguration Configuration { get; }
 
-        public TaskManagementSystemContext(DbContextOptions<TaskManagementSystemContext> options, IConfiguration configuration)
+        public TaskManagementContext(DbContextOptions<TaskManagementContext> options, IConfiguration configuration)
             : base(options)
         {
             Configuration = configuration;
@@ -22,6 +22,7 @@ namespace TaskManagement.Models
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<JAccountCompany> JAccountCompany { get; set; }
         public virtual DbSet<JAccountTask> JAccountTask { get; set; }
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<Task> Task { get; set; }
@@ -35,7 +36,6 @@ namespace TaskManagement.Models
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Management"));
             }
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -65,12 +65,6 @@ namespace TaskManagement.Models
                     .HasColumnName("Account_User_BirthDate")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.AccountUserCompanyId).HasColumnName("Account_User_Company_ID");
-
-                entity.Property(e => e.AccountUserCompanyLastChangeDateTime)
-                    .HasColumnName("Account_User_Company_LastChange_DateTime")
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.AccountUserFirstName)
                     .HasColumnName("Account_User_FirstName")
                     .HasMaxLength(80);
@@ -83,12 +77,7 @@ namespace TaskManagement.Models
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.AccountRoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Account__Account__398D8EEE");
-
-                entity.HasOne(d => d.AccountUserCompany)
-                    .WithMany(p => p.Account)
-                    .HasForeignKey(d => d.AccountUserCompanyId)
-                    .HasConstraintName("FK__Account__Account__3D5E1FD2");
+                    .HasConstraintName("FK__Account__Account__32E0915F");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -108,17 +97,17 @@ namespace TaskManagement.Models
                 entity.HasOne(d => d.CommentAccount)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentAccountId)
-                    .HasConstraintName("FK__Comment__Comment__4BAC3F29");
+                    .HasConstraintName("FK__Comment__Comment__33D4B598");
 
                 entity.HasOne(d => d.CommentProject)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentProjectId)
-                    .HasConstraintName("FK__Comment__Comment__4CA06362");
+                    .HasConstraintName("FK__Comment__Comment__34C8D9D1");
 
                 entity.HasOne(d => d.CommentTask)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.CommentTaskId)
-                    .HasConstraintName("FK__Comment__Comment__34C8D9D1");
+                    .HasConstraintName("FK__Comment__Comment__35BCFE0A");
             });
 
             modelBuilder.Entity<Company>(entity =>
@@ -129,8 +118,6 @@ namespace TaskManagement.Models
                     .HasColumnName("Company_Created_DateTime")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.CompanyCreatorAccountId).HasColumnName("Company_Creator_Account_ID");
-
                 entity.Property(e => e.CompanyInfo)
                     .HasColumnName("Company_Info")
                     .HasMaxLength(400);
@@ -139,11 +126,37 @@ namespace TaskManagement.Models
                     .IsRequired()
                     .HasColumnName("Company_Name")
                     .HasMaxLength(200);
+            });
 
-                entity.HasOne(d => d.CompanyCreatorAccount)
-                    .WithMany(p => p.Company)
-                    .HasForeignKey(d => d.CompanyCreatorAccountId)
-                    .HasConstraintName("FK__Company__Company__3C69FB99");
+            modelBuilder.Entity<JAccountCompany>(entity =>
+            {
+                entity.HasKey(e => new { e.AccountId, e.CompanyId });
+
+                entity.ToTable("J_AccountCompany");
+
+                entity.Property(e => e.AccountId).HasColumnName("Account_ID");
+
+                entity.Property(e => e.CompanyId).HasColumnName("Company_ID");
+
+                entity.Property(e => e.CompanyCreator).HasColumnName("Company_Creator");
+
+                entity.Property(e => e.CompanyOwner).HasColumnName("Company_Owner");
+
+                entity.Property(e => e.UserAssignedDateTime)
+                    .HasColumnName("User_Assigned_DateTime")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.JAccountCompany)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__J_Account__Accou__36B12243");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.JAccountCompany)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__J_Account__Compa__37A5467C");
             });
 
             modelBuilder.Entity<JAccountTask>(entity =>
@@ -156,17 +169,25 @@ namespace TaskManagement.Models
 
                 entity.Property(e => e.TaskId).HasColumnName("Task_ID");
 
+                entity.Property(e => e.TaskCreator).HasColumnName("Task_Creator");
+
+                entity.Property(e => e.TaskNotification).HasColumnName("Task_Notification");
+
+                entity.Property(e => e.UserAssignedDateTime)
+                    .HasColumnName("User_Assigned_DateTime")
+                    .HasColumnType("datetime");
+
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.JAccountTask)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__J_Account__Accou__47DBAE45");
+                    .HasConstraintName("FK__J_Account__Accou__38996AB5");
 
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.JAccountTask)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__J_Account__Task___48CFD27E");
+                    .HasConstraintName("FK__J_Account__Task___398D8EEE");
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -201,7 +222,7 @@ namespace TaskManagement.Models
                 entity.HasOne(d => d.ProjectCreatorAccount)
                     .WithMany(p => p.Project)
                     .HasForeignKey(d => d.ProjectCreatorAccountId)
-                    .HasConstraintName("FK__Project__Project__403A8C7D");
+                    .HasConstraintName("FK__Project__Project__3A81B327");
             });
 
             modelBuilder.Entity<Task>(entity =>
@@ -211,8 +232,6 @@ namespace TaskManagement.Models
                 entity.Property(e => e.TaskCreatedDateTime)
                     .HasColumnName("Task_Created_DateTime")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.TaskCreatorAccountId).HasColumnName("Task_Creator_Account_ID");
 
                 entity.Property(e => e.TaskDescription)
                     .HasColumnName("Task_Description")
@@ -235,7 +254,7 @@ namespace TaskManagement.Models
                     .WithMany(p => p.Task)
                     .HasForeignKey(d => d.TaskTaskStateId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Task__Task_TaskS__44FF419A");
+                    .HasConstraintName("FK__Task__Task_TaskS__3B75D760");
             });
 
             modelBuilder.Entity<TaskState>(entity =>

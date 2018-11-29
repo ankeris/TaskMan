@@ -20,9 +20,9 @@ namespace TaskManagement.Controllers
             return View();
         }
 
-        private readonly TaskManagementSystemContext _context;
+        private readonly TaskManagementContext _context;
 
-        public HomeController(TaskManagementSystemContext context)
+        public HomeController(TaskManagementContext context)
         {
             _context = context;
         }
@@ -36,7 +36,7 @@ namespace TaskManagement.Controllers
             if (account != null)
             {
                 // Stores few account details into sessions
-                HttpContext.Session.SetString("AccID", account.AccountId.ToString());
+                HttpContext.Session.SetInt32("AccID", account.AccountId);
                 HttpContext.Session.SetString("Username", account.AccountUserFirstName);
                 HttpContext.Session.SetInt32("RoleID", account.AccountRoleId);
 
