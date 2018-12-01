@@ -4,6 +4,7 @@ for details on configuring this project to bundle and minify static web assets. 
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  max-width: 1200px;
 }
 .split-window .window__left {
   flex-basis: 50%;
@@ -15,6 +16,10 @@ for details on configuring this project to bundle and minify static web assets. 
 .split-window .window__right {
   flex-basis: 50%;
   flex-direction: column;
+}
+.split-window .window__right .information-box {
+  list-style: none;
+  padding: 0;
 }
 
 body {

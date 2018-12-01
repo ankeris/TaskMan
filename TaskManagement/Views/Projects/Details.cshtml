@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Project.ProjectName</h2>
 @if (@ViewBag.DeletedMessage != null)
 {
     <h1>@ViewBag.DeletedMessage</h1>
@@ -40,9 +40,16 @@
             <li>Deadline: @Model.Project.ProjectDeadline</li>
             <li>Description:</li>
             <li>Comments</li>
+            @*<partial name="_CommentCreate" view-data="ViewData" />*@
+            @await Component.InvokeAsync("CommentCreate", new {
+               id = Model.Project.ProjectId,
+               commentOn = "Project"
+            })
+            @await Html.PartialAsync("_CommentSection", Model.Comments)
         </ul>
     </div>
 </section>
+
 <div>
     @*<a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |*@
     <a asp-controller="Tasks" asp-action="Create" asp-route-id="@Model.Project.ProjectId">Add Task</a>

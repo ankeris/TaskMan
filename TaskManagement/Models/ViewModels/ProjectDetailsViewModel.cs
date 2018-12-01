@@ -8,5 +8,6 @@ namespace TaskManagement.Models.ViewModels
     {
         public Project Project { get; set; }
         public IEnumerable<Task> Tasks { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

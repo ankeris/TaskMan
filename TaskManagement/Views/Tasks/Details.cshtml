@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Task.TaskName</h2>
 <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId">Back to List</a>
 <section class="content-section split-window">
     <div class="split-window window__left">
@@ -22,11 +22,10 @@
             }
         </ul>
         Comments:
-        <ul>
-            @foreach (Comment comm in Model.Comments)
-            {
-                <li></li>
-            }
-        </ul>
+        @await Component.InvokeAsync("CommentCreate", new {
+               id = Model.Task.TaskId,
+               commentOn = "Task"
+            })
+        @await Html.PartialAsync("_CommentSection", Model.Comments)
     </div>
 </section>

@@ -103,20 +103,24 @@ namespace TaskManagement.Controllers
             }
             ViewBag.DeletedMessage = DeletedMessage;
 
+            // Project details
             var project = await _context.Project
                 .Include(p => p.ProjectCreatorAccount)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
-
-            //returns the first occurrence within the entire List
-            //Project project = projects.Find(x => x.ProjectId == id);
-
+            // Find relevant tasks for Project
             List<Models.Task> tasks = await _context.Task
                 .Where(t => t.TaskProjectId == id).ToListAsync();
+            // Find all comments that are related to project
+            List<Comment> comments = await _context.Comment
+                .Where(t => t.CommentProjectId == id).ToListAsync();
+
+            comments.ForEach(comm => comm.CommentAccount = _context.Account.Where(acc => acc.AccountId == comm.CommentAccountId).FirstOrDefault());
 
             details_model = new ProjectDetailsViewModel
             {
                 Project = project,
-                Tasks = tasks
+                Tasks = tasks,
+                Comments = comments
             };
             if (project == null)
             {
@@ -134,14 +138,14 @@ namespace TaskManagement.Controllers
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectCreatedDateTime,ProjectDeadline,ProjectDescription,ProjectCreatorAccountId,ProjectActive,ProjectEndDateTime")] Project project)
         {
             if (ModelState.IsValid)
             {
+                project.ProjectCreatedDateTime = DateTime.Now;
+                project.ProjectEndDateTime = null;
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -168,8 +172,6 @@ namespace TaskManagement.Controllers
         }
 
         // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,ProjectCreatedDateTime,ProjectDeadline,ProjectDescription,ProjectCreatorAccountId,ProjectActive,ProjectEndDateTime")] Project project)

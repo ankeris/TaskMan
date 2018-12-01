@@ -78,6 +78,7 @@ namespace TaskManagement.Controllers
 
             Models.Task task = await _context.Task.Where(tsk => tsk.TaskId == id).FirstOrDefaultAsync();
             task.TaskTaskState = await _context.TaskState.Where(ts => ts.TaskStateId == task.TaskTaskStateId).FirstOrDefaultAsync();
+
             if (task == null)
             {
                 return NotFound();
@@ -117,7 +118,7 @@ namespace TaskManagement.Controllers
                  where jt.TaskId == id
                  select acc).ToListAsync();
 
-            List<Comment> comments = await _context.Comment.Where(c => c.CommentProjectId == id).ToListAsync();
+            List<Comment> comments = await _context.Comment.Where(c => c.CommentTaskId == id).ToListAsync();
 
             task_details_model = new TaskDetailsViewModel
             {

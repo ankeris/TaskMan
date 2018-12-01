@@ -1,0 +1,6 @@
+﻿@model CommentCreateViewModel
+
+<form asp-controller="Comment" asp-action="Create" asp-route-on="@Model.CommentOn" asp-route-id="@Model.ID">
+    <textarea class="form-control" type="text" name="CommentText" style="resize: none;"></textarea>
+    <input type="submit" value="Post" class="btn btn-default" />
+</form>
