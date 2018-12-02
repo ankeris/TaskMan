@@ -4,14 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.Project.ProjectName</h2>
 @if (@ViewBag.DeletedMessage != null)
 {
     <h1>@ViewBag.DeletedMessage</h1>
 }
-<a asp-action="Index">Go back</a>
-<section class="content-section split-window">
-    <div class="split-window window__left">
+<a class="button-back" asp-action="Index"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
+<section class="dashboard split-window">
+    <div class="window--left">
         <h4>@Model.Project.ProjectName</h4>
         <ul class="task-box">
             @{int i = 1;}
@@ -34,7 +33,7 @@
             }
         </ul>
     </div>
-    <div class="split-window window__right">
+    <div class="window--right">
         <ul class="information-box">
             <li>Progress: @Model.Project.DoneTasks task(s) done out of @Model.Project.TotalTasks</li>
             <li>Deadline: @Model.Project.ProjectDeadline</li>

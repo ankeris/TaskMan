@@ -1,10 +1,26 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
-@import 'projects';
+@import 'variables';
+@import 'fonts.scss';
+@import 'animations.scss';
+@import 'partials/projects';
+@import 'partials/_login.scss';
+@import 'partials/navbar';
+@import 'partials/dashboard';
+@import 'partials/comments';
 
-body {
-    padding-top: 50px;
+.app-background {
+    font-family: montserrat;
+    font-size: 12pt;
+    min-height: 100vh;
     padding-bottom: 20px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background: #853dcc; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #853dcc 0%, #1bb4c9 54%, #00b5c3 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #853dcc 0%,#1bb4c9 54%,#00b5c3 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #853dcc 0%,#1bb4c9 54%,#00b5c3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#853dcc', endColorstr='#00b5c3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     /* Wrapping element */
     /* Set some basic padding to keep content from hitting the edges */
     .body-content {
@@ -13,26 +29,48 @@ body {
     }
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.content-section {
+    max-width: 1170px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+.error-box {
+    color: red;
+    padding: 10px;
+    animation: bounce 0.4s;
+    animation-direction: alternate;
+    animation-iteration-count: 4;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+footer {
+    position: fixed;
+    bottom: 0;
 }
 
+.button-back {
+    color: white;
+    display: flex;
+    align-items: center;
+    transition-duration: 90ms;
+
+    span {
+        padding: 10px 5px;
+        font-size: 1.5em;
+    }
+
+    i {
+        font-size: 20pt;
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: $blue;
+        animation: backLeft 0.25s;
+        animation-direction: alternate;
+        animation-iteration-count: 2;
+    }
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
 }

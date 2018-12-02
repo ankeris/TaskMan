@@ -1,0 +1,60 @@
+﻿.main-title {
+    color: white;
+    text-align: center;
+}
+
+.login-screen {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .login-input {
+        border: 1px solid white;
+        background-color: rgba(255,255,255, 30%);
+        width: 250px;
+        border-radius: 20px;
+        padding: 10px 15px;
+        margin: 0 auto 10px auto;
+        display: block;
+        text-align: center;
+        font-size: 18px;
+        color: white;
+        transition-duration: 0.25s;
+        font-weight: 300;
+
+        &::placeholder {
+            color: white;
+        }
+
+        &:hover {
+            background-color: rgba(255,255,255, 70%);
+        }
+
+        &:focus {
+            background-color: white;
+            color: black;
+            width: 300px;
+        }
+    }
+
+    .submit {
+        color: white;
+        border-color: lawngreen;
+
+        &:hover {
+            color: $success-green;
+
+            .shadow {
+                -moz-box-shadow: inset 0 0 15px $success-green;
+                -webkit-box-shadow: inset 0 0 15px $success-green;
+                box-shadow: inset 0 0 15px $success-green;
+            }
+
+            background-color: rgba($blue, 80%);
+        }
+    }
+}

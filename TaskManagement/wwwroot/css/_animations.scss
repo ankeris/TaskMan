@@ -1,0 +1,19 @@
+﻿@keyframes bounce {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(0, -50px, 0);
+    }
+}
+
+@keyframes backLeft {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(-15px, 0);
+    }
+}

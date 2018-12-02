@@ -2,89 +2,51 @@
 
 <h2>@Model.Company.CompanyName</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Project Name
-            </th>
-            <th>
-                CreatedDateTime
-            </th>
-            <th>
-                Deadline
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Active
-            </th>
-            <th>
-                End DateTime
-            </th>
-            <th>
-                Creator
-            </th>
-            <th>
-                Progress
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
+<section class="dashboard">
+    @if (@Context.Session.GetInt32("RoleID") == 1)
+    {
+        <div class="add-project">
+            <a asp-action="Create" class="add-button"><i class="fas fa-plus"></i></a>
+            <div class="add-project__text">Create new project</div>
+        </div>
+    }
     @if (Model.Projects.Count() > 0)
     {
-        <tbody>
-            @foreach (var item in Model.Projects)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectCreatedDateTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectDeadline)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectEndDateTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectCreatorAccount.AccountEmail)
-                    </td>
-                    <td>
-                        @if (item.TotalTasks != 0)
-                        {
-                            <span>@item.ProgressBar %</span>
-                        }
-                        else
-                        {
-                            <small>No tasks yet!</small>
-                        }
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit Project</a> |
-                        <a asp-action="Details"
-                           asp-route-id="@item.ProjectId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        @foreach (var item in Model.Projects)
+        {
+            <section class="project-list-parent">
+                @if (@Context.Session.GetInt32("RoleID") == 1)
+                {
+                    <div class="admin-buttons">
+                        <a class="admin-edit" asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>
+                        <a class="admin-delete" asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+                    </div>
+                }
+                <a class="project-list__item-box" asp-action="Details" asp-route-id="@item.ProjectId">
+                    <div class="detail"><small>Project @item.ProjectId</small></div>
+                    <div class="detail"><b>@item.ProjectName</b></div>
+                    <div class="detail"><small>Deadline: @item.ProjectDeadline</small></div>
+
+                    @if (item.TotalTasks != 0)
+                    {
+                        <div class="progress-wrap progress" data-progress-percent="@item.ProgressBar">
+                            <div class="progress-bar progress"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="progress-wrap progress" data-progress-percent="0">
+                            <div class="progress-bar progress">No tasks yet!</div>
+                        </div>
+                    }
+                </a>
+            </section>
+        }
     }
     else
     {
-        <tr>No projects, Rest well!</tr>
+        <div class="main-title">No projects, Rest well!</div>
     }
-</table>
+</section>
+<script src="~/js/progress_bar.js" asp-append-version="true"></script>
+

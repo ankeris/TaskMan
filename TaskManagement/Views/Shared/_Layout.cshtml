@@ -8,6 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/dist/output.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -16,45 +17,36 @@
         <link rel="stylesheet" href="~/dist/output.css" asp-append-version="true" />
     </environment>
 </head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TaskMan</a>
+<body class="app-background">
+    @if (@Context.Session.GetString("Username") != null)
+    {
+        <section class="main-nav-wrapper">
+            <div class="content-section">
+                <nav class="main-navigation">
+                    <div class="nav-items-box">
+                        <ul class="nav-items-box__items">
+                            <li class="list-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="list-item"><a asp-area="" asp-controller="Projects" asp-action="Index">Projects</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav-user-box">
+                        <ul class="nav-items-box__items">
+                            <li class="list-item"><a asp-controller="Home" asp-action="Logout">Logout</a></li>
+                            <li class="list-item">
+                                <span>
+                                    <small>(Logged in as @Context.Session.GetString("Username"))</small>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
-            <div class="navbar-collapse collapse">
-                @if (@Context.Session.GetString("Username") != null)
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Projects" asp-action="Index">Projects</a></li>
-                        <li><a asp-controller="Home" asp-action="Logout" style="color: red">Logout</a></li>
-                    </ul>
-                    <span class="navbar-text">
-                        <small>(Logged in as @Context.Session.GetString("Username"))</small>
-                    </span>
-                }
-                else
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    </ul>
-                }
-            </div>
-        </div>
-    </nav>
-
+        </section>
+    }
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
         <footer>
             <p>&copy; 2018 - TaskMan</p>
         </footer>

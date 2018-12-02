@@ -1,42 +1,20 @@
 ﻿@model IEnumerable<TaskManagement.Models.Comment>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentAccount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentProject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentTask)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentText)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentAccount.AccountUserFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentProject.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentTask.ProjectName)
-                </td>
-                <td>
-                    <a asp-controller="Comment" asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<ul class="comments-list">
+
+    @foreach (var item in Model)
+    {
+        <li class="comments-list__item">
+            <div class="person-info">
+                <span><img class="person-image" src="@item.CommentAccount.AccountImageLink" alt="Alternate Text" /></span>
+                <span>@item.CommentAccount.AccountUserFirstName</span>
+            </div>
+            <div class="comment-details">
+                <span>@item.CommentText</span>
+            </div>
+
+
+            <a asp-controller="Comment" asp-action="Delete" asp-route-id="@item.CommentId">X</a>
+        </li>
+    }
+</ul>
+

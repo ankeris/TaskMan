@@ -73,6 +73,10 @@ namespace TaskManagement.Models
                     .HasColumnName("Account_User_LastName")
                     .HasMaxLength(80);
 
+                entity.Property(e => e.AccountImageLink)
+                    .HasColumnName("Account_Image_Link")
+                    .HasMaxLength(255);
+
                 entity.HasOne(d => d.AccountRole)
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.AccountRoleId)
