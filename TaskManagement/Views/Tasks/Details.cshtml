@@ -6,13 +6,13 @@
 
 <h2>@Model.Task.TaskName</h2>
 <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId">Back to List</a>
-<section class="content-section split-window">
-    <div class="split-window window__left">
+<section class="dashboard split-window">
+    <div class="window--left">
         <h4>@Model.Task.TaskName</h4>
         <h5>Description:</h5>
         <div>@Model.Task.TaskDescription</div>
     </div>
-    <div class="split-window window__right">
+    <div class="window--right">
         State: @Model.Task.TaskTaskState<br />
         Assignees:
         <ul>
