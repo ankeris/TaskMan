@@ -19,6 +19,7 @@ namespace TaskManagement.Controllers
         private int? AccID { get; set; }
         private string AccName { get; set; }
         private string DeletedMessage { get; set; }
+        private string errorMessage { get; set; }
 
         public List<Project> projects = new List<Project>();
         public List<Company> company = new List<Company>();
@@ -101,6 +102,12 @@ namespace TaskManagement.Controllers
                 DeletedMessage = HttpContext.Session.GetString("DeletedMessage");
                 HttpContext.Session.Remove("DeletedMessage");
             }
+            if (HttpContext.Session.GetString("errorMessage") != null)
+            {
+                errorMessage = HttpContext.Session.GetString("errorMessage");
+                HttpContext.Session.Remove("errorMessage");
+            }
+            ViewBag.errorMessage = errorMessage;
             ViewBag.DeletedMessage = DeletedMessage;
 
             // Project details

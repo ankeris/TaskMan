@@ -4,28 +4,28 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.Task.TaskName</h2>
-<a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId">Back to List</a>
+<a class="button-back" asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId"><i class="fas fa-chevron-left"></i><span>Go back to Project</span></a>
 <section class="dashboard split-window">
     <div class="window--left">
-        <h4>@Model.Task.TaskName</h4>
+        <h3 class="three-items_item">Task: @Model.Task.TaskName</h3>
         <h5>Description:</h5>
         <div>@Model.Task.TaskDescription</div>
     </div>
     <div class="window--right">
-        State: @Model.Task.TaskTaskState<br />
-        Assignees:
-        <ul>
-            @foreach (Account acc in Model.Assignees)
-            {
-                <li>@acc.AccountUserFirstName @acc.AccountUserLastName</li>
-            }
+        <ul class="information-box">
+            <li>Task State: <small>@Model.Task.TaskTaskState.TaskStateName</small></li>
+            <li>Assignees:</li>
+            <ul>
+                @foreach (Account acc in Model.Assignees)
+                {
+                    <li>@acc.AccountUserFirstName @acc.AccountUserLastName</li>
+                }
+            </ul>
         </ul>
-        Comments:
+        @await Html.PartialAsync("_CommentSection", Model.Comments)
         @await Component.InvokeAsync("CommentCreate", new {
                id = Model.Task.TaskId,
                commentOn = "Task"
             })
-        @await Html.PartialAsync("_CommentSection", Model.Comments)
     </div>
 </section>

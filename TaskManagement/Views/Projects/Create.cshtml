@@ -4,60 +4,56 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<a class="button-back" asp-action="Index"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
 
-<h4>Project</h4>
+<h2 class="main-title">Create</h2>
+
+<h4 class="main-title">Project</h4>
+
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProjectName" class="control-label">Name</label>
-                <input asp-for="ProjectName" class="form-control" />
-                <span asp-validation-for="ProjectName" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="ProjectCreatedDateTime" class="control-label"></label>
-                    <input asp-for="ProjectCreatedDateTime" class="form-control" />
-                    <span asp-validation-for="ProjectCreatedDateTime" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="ProjectDeadline" class="control-label">Deadline:</label>
-                <input asp-for="ProjectDeadline" class="form-control" />
-                <span asp-validation-for="ProjectDeadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectDescription" class="control-label">Description</label>
-                <input asp-for="ProjectDescription" class="form-control" />
-                <span asp-validation-for="ProjectDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectCreatorAccountId" class="control-label">Creator</label>
-                <select asp-for="ProjectCreatorAccountId" class="form-control" asp-items="ViewBag.ProjectCreatorAccountId"></select>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="ProjectActive" /> @Html.DisplayNameFor(model => model.ProjectActive)
-                    </label>
-                </div>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="ProjectEndDateTime" class="control-label"></label>
-                    <input asp-for="ProjectEndDateTime" class="form-control" />
-                    <span asp-validation-for="ProjectEndDateTime" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+<form asp-action="Create" class="taskman-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="ProjectName" class="control-label">Name:</label>
+        <input asp-for="ProjectName" class="form-input" />
+        <span asp-validation-for="ProjectName" class="text-danger"></span>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    @*<div class="form-group">
+            <label asp-for="ProjectCreatedDateTime" class="control-label"></label>
+            <input asp-for="ProjectCreatedDateTime" class="form-control" />
+            <span asp-validation-for="ProjectCreatedDateTime" class="text-danger"></span>
+        </div>*@
+    <div class="form-group">
+        <label asp-for="ProjectDeadline" class="control-label">Deadline:</label>
+        <input asp-for="ProjectDeadline" class="form-input" />
+        <span asp-validation-for="ProjectDeadline" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProjectDescription" class="control-label">Description</label>
+        <textarea asp-for="ProjectDescription" class="form-input"></textarea>
+        <span asp-validation-for="ProjectDescription" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProjectCreatorAccountId" class="control-label">Creator</label>
+        <select asp-for="ProjectCreatorAccountId" class="form-input" asp-items="ViewBag.ProjectCreatorAccountId"></select>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="ProjectActive" /> @Html.DisplayNameFor(model => model.ProjectActive)
+            </label>
+        </div>
+    </div>
+    @*<div class="form-group">
+            <label asp-for="ProjectEndDateTime" class="control-label"></label>
+            <input asp-for="ProjectEndDateTime" class="form-control" />
+            <span asp-validation-for="ProjectEndDateTime" class="text-danger"></span>
+        </div>*@
+    <div class="form-group">
+        <input type="submit" value="Create" class="form-input submit" />
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

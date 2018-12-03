@@ -18,17 +18,30 @@
 
                 .list-item {
                     padding: 15px;
-                    margin: 0 10px;
 
                     a {
                         color: white;
+                        padding: 16px;
 
                         &:hover {
+                            transition: 0.2s linear;
+                            text-decoration: none;
+                            background-color: $blue;
+                            border-radius: 15px;
                         }
+                    }
+                }
+
+                .user {
+                    color: white;
+
+                    i {
+                        color: $success-green;
                     }
                 }
             }
         }
+
 
         .nav-user-box {
             .nav-items-box__items {

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<TaskManagement.Models.Comment>
 <ul class="comments-list">
-
+    <h4 class="main-title">Comments</h4>
     @foreach (var item in Model)
     {
         <li class="comments-list__item">
@@ -11,9 +11,10 @@
             <div class="comment-details">
                 <span>@item.CommentText</span>
             </div>
-
-
-            <a asp-controller="Comment" asp-action="Delete" asp-route-id="@item.CommentId">X</a>
+            @if (item.CommentAccountId == @Context.Session.GetInt32("AccID"))
+            {
+                <a title="Delete" class="comment-delete" asp-controller="Comment" asp-action="Delete" asp-route-id="@item.CommentId"><i class="fas fa-trash-alt"></i></a>
+            }
         </li>
     }
 </ul>

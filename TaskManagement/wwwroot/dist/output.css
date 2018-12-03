@@ -4,12 +4,43 @@ for details on configuring this project to bundle and minify static web assets. 
   src: url(fonts/MontserratAlternates-Medium.otf);
   font-family: montserrat;
 }
+.error-box {
+  color: red;
+  padding: 10px;
+}
+
+.error-shake {
+  animation: shake 0.2s;
+  animation-direction: alternate;
+  animation-iteration-count: 2;
+}
+
+.error-bounce {
+  animation: bounce 0.4s;
+  animation-direction: alternate;
+  animation-iteration-count: 4;
+}
+
 @keyframes bounce {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
     transform: translate3d(0, -50px, 0);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  33% {
+    transform: translate3d(-20px, 0, 0);
+  }
+  66% {
+    transform: translate3d(20px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes backLeft {
@@ -133,11 +164,11 @@ for details on configuring this project to bundle and minify static web assets. 
   color: white;
 }
 .login-screen .login-input:hover {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 .login-screen .login-input:focus {
-  background-color: white;
-  color: black;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #1f1f1f;
   width: 300px;
 }
 .login-screen .submit {
@@ -174,10 +205,22 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .main-nav-wrapper .main-navigation .nav-items-box .nav-items-box__items .list-item, .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items .list-item {
   padding: 15px;
-  margin: 0 10px;
 }
 .main-nav-wrapper .main-navigation .nav-items-box .nav-items-box__items .list-item a, .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items .list-item a {
   color: white;
+  padding: 16px;
+}
+.main-nav-wrapper .main-navigation .nav-items-box .nav-items-box__items .list-item a:hover, .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items .list-item a:hover {
+  transition: 0.2s linear;
+  text-decoration: none;
+  background-color: #00b5c3;
+  border-radius: 15px;
+}
+.main-nav-wrapper .main-navigation .nav-items-box .nav-items-box__items .user, .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items .user {
+  color: white;
+}
+.main-nav-wrapper .main-navigation .nav-items-box .nav-items-box__items .user i, .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items .user i {
+  color: #7CFC00;
 }
 .main-nav-wrapper .main-navigation .nav-user-box .nav-items-box__items {
   justify-content: flex-end;
@@ -223,6 +266,59 @@ for details on configuring this project to bundle and minify static web assets. 
   list-style: none;
   padding: 0;
 }
+.split-window .information-box li {
+  margin: 10px 0;
+  color: white;
+}
+
+.three-items {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  width: 95%;
+}
+.three-items .three-items__item {
+  margin: 0 10px;
+}
+.three-items .add-project {
+  margin: 0 10px;
+}
+.three-items .add-button {
+  padding: 10px;
+  margin: 5px;
+}
+.three-items .add-button i {
+  font-size: 13pt;
+}
+
+.task-box {
+  list-style: none;
+  padding: 0;
+  width: 90%;
+  margin: 20px 10px;
+}
+.task-box .task-box__item {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 12px 0;
+  border-radius: 0 25px 25px 0;
+}
+.task-box .task-box__item .task-box__item--button {
+  padding: 10px 30px 10px 10px;
+  color: white;
+  display: block;
+}
+.task-box .task-box__item .task-box__item--button:hover {
+  color: rgba(133, 61, 204, 0.7);
+  text-decoration: none;
+}
+.task-box .task-box__item .delete-task {
+  padding: 8px 10px;
+  margin-left: auto;
+}
 
 @media screen and (max-width: 600px) {
   .split-window {
@@ -231,14 +327,25 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .comments-list {
   list-style: none;
-  padding: 0;
   margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .comments-list .comments-list__item {
   display: flex;
   align-items: center;
   flex-direction: row;
   align-content: stretch;
+}
+.comments-list .comments-list__item .comment-delete {
+  color: #C41E3A;
+  margin: 3px;
+  font-size: 15pt;
+}
+.comments-list .comments-list__item .comment-delete:hover {
+  color: black;
+  transition: 0.3s ease-out;
 }
 .comments-list .comments-list__item .person-info {
   width: 90px;
@@ -247,6 +354,7 @@ for details on configuring this project to bundle and minify static web assets. 
   margin: 5px auto;
   text-align: center;
   font-size: 0.8em;
+  color: white;
 }
 .comments-list .comments-list__item .person-info .person-image {
   background-color: white;
@@ -262,6 +370,65 @@ for details on configuring this project to bundle and minify static web assets. 
   padding: 5px;
   font-size: 0.8em;
   border-radius: 10px;
+  color: #1f1f1f;
+}
+
+.taskman-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.taskman-form input, .taskman-form textarea, .taskman-form select {
+  width: 300px;
+}
+.taskman-form label {
+  color: white;
+}
+.taskman-form .submit {
+  text-align: center;
+}
+
+.form-input {
+  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 5px 15px;
+  display: block;
+  margin: 5px;
+  text-align: left;
+  font-size: 18px;
+  color: #1f1f1f;
+  transition-duration: 0.25s;
+  font-weight: 300;
+}
+.form-input::placeholder {
+  color: white;
+  font-size: 0.9em;
+}
+.form-input:hover {
+  transition: 0.3s ease-out;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.form-input:focus {
+  transition: 0.3s ease-out;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #1f1f1f;
+}
+
+.submit {
+  color: white;
+  border-color: lawngreen;
+}
+.submit:hover {
+  color: #7CFC00;
+  background-color: rgba(0, 181, 195, 0.8);
+}
+.submit:hover .shadow {
+  -moz-box-shadow: inset 0 0 15px #7CFC00;
+  -webkit-box-shadow: inset 0 0 15px #7CFC00;
+  box-shadow: inset 0 0 15px #7CFC00;
 }
 
 .app-background {
@@ -295,17 +462,17 @@ for details on configuring this project to bundle and minify static web assets. 
   box-sizing: border-box;
 }
 
-.error-box {
-  color: red;
-  padding: 10px;
-  animation: bounce 0.4s;
-  animation-direction: alternate;
-  animation-iteration-count: 4;
-}
-
 footer {
   position: fixed;
   bottom: 0;
+}
+
+.body-content {
+  color: white;
+}
+
+.list-group {
+  color: #1f1f1f;
 }
 
 .button-back {

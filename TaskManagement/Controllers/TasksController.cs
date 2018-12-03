@@ -15,6 +15,9 @@ namespace TaskManagement.Controllers
     public class TasksController : Controller
     {
         private readonly TaskManagementContext _context;
+        private string DeletedMessage { get; set; }
+        private string errorMessage { get; set; }
+
         TaskDetailsViewModel task_details_model = new TaskDetailsViewModel();
 
         public TasksController(TaskManagementContext context)
@@ -42,13 +45,6 @@ namespace TaskManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                //task.TaskProjectId = ProjectID;
-                //_context.Add(task);
-                //await _context.SaveChangesAsync();
-                //junction.TaskId = task.TaskId;
-                //junction.UserAssignedDateTime = DateTime.Now;
-                //_context.Add(junction);
-                //await _context.SaveChangesAsync();
                 _context.Database.ExecuteSqlCommand("CreateTask " +
                     "@p_task_name, " +
                     "@p_task_description, " +
@@ -108,8 +104,20 @@ namespace TaskManagement.Controllers
             {
                 return NotFound();
             }
-
+            if (HttpContext.Session.GetString("DeletedMessage") != null)
+            {
+                DeletedMessage = HttpContext.Session.GetString("DeletedMessage");
+                HttpContext.Session.Remove("DeletedMessage");
+            }
+            if (HttpContext.Session.GetString("errorMessage") != null)
+            {
+                errorMessage = HttpContext.Session.GetString("errorMessage");
+                HttpContext.Session.Remove("errorMessage");
+            }
+            ViewBag.errorMessage = errorMessage;
+            ViewBag.DeletedMessage = DeletedMessage;
             var task = await _context.Task.FirstOrDefaultAsync(m => m.TaskId == id);
+            task.TaskTaskState = await _context.TaskState.FirstOrDefaultAsync(t => t.TaskStateId == task.TaskTaskStateId);
 
             List<Account> assignees = await
                 (from acc in _context.Account
@@ -119,6 +127,7 @@ namespace TaskManagement.Controllers
                  select acc).ToListAsync();
 
             List<Comment> comments = await _context.Comment.Where(c => c.CommentTaskId == id).ToListAsync();
+            comments.ForEach(comm => comm.CommentAccount = _context.Account.Where(acc => acc.AccountId == comm.CommentAccountId).FirstOrDefault());
 
             task_details_model = new TaskDetailsViewModel
             {

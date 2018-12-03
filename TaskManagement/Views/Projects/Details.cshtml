@@ -6,27 +6,38 @@
 
 @if (@ViewBag.DeletedMessage != null)
 {
-    <h1>@ViewBag.DeletedMessage</h1>
+    <h2 class="deletion-notification">@ViewBag.DeletedMessage</h2>
 }
 <a class="button-back" asp-action="Index"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
+
 <section class="dashboard split-window">
     <div class="window--left">
-        <h4>@Model.Project.ProjectName</h4>
+        <div class="three-items">
+            <div class="three-items__item">Project-@Model.Project.ProjectId</div>
+            <div class="three-items__item"><h4>@Model.Project.ProjectName</h4></div>
+            <div class="three-items__item">
+                <div class="add-project">
+                    <a asp-controller="Tasks" asp-action="Create" asp-route-id="@Model.Project.ProjectId" class="add-button"><i class="fas fa-plus"></i></a>
+                    <div>New task</div>
+                </div>
+            </div>
+        </div>
+
         <ul class="task-box">
             @{int i = 1;}
             @foreach (TaskManagement.Models.Task t in Model.Tasks)
             {
-                <li>
-                    <span>@i </span>
+                <li class="task-box__item">
                     <span>
-                        <a asp-controller="Tasks"
+                        <a class="task-box__item--button" asp-controller="Tasks"
                            asp-action="Details"
-                           asp-route-id="@t.TaskId">@t.TaskName</a>
+                           asp-route-id="@t.TaskId">Task<span> @i</span>:<span>&nbsp; @t.TaskName</span></a>
                     </span>
-                    <a asp-controller="Tasks"
+
+                    <a class="delete-task" asp-controller="Tasks"
                        asp-action="Delete"
                        asp-route-id="@t.TaskId">
-                        <b>[x]</b>
+                        <i class="fas fa-trash-alt"></i>
                     </a>
                 </li>
                 i++;
@@ -35,21 +46,15 @@
     </div>
     <div class="window--right">
         <ul class="information-box">
-            <li>Progress: @Model.Project.DoneTasks task(s) done out of @Model.Project.TotalTasks</li>
             <li>Deadline: @Model.Project.ProjectDeadline</li>
             <li>Description:</li>
-            <li>Comments</li>
-            @*<partial name="_CommentCreate" view-data="ViewData" />*@
+            @await Html.PartialAsync("_CommentSection", Model.Comments)
+
             @await Component.InvokeAsync("CommentCreate", new {
                id = Model.Project.ProjectId,
                commentOn = "Project"
             })
-            @await Html.PartialAsync("_CommentSection", Model.Comments)
+
         </ul>
     </div>
 </section>
-
-<div>
-    @*<a asp-action="Edit" asp-route-id="@Model.Project.ProjectId">Edit</a> |*@
-    <a asp-controller="Tasks" asp-action="Create" asp-route-id="@Model.Project.ProjectId">Add Task</a>
-</div>

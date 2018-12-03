@@ -4,55 +4,49 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<a class="button-back" asp-controller="Projects" asp-action="Index"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
 
-<h4>Task</h4>
+<h2 class="main-title">Create</h2>
+<h4 class="main-title">Task</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Task.TaskName" class="control-label"></label>
-                <input asp-for="Task.TaskName" class="form-control" />
-                <span asp-validation-for="Task.TaskName" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Task.TaskCreatedDateTime" class="control-label"></label>
-                    <input asp-for="Task.TaskCreatedDateTime" value="@DateTime.Now.ToString()" class="form-control" />
-                    <span asp-validation-for="Task.TaskCreatedDateTime" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="Task.TaskDescription" class="control-label"></label>
-                <input asp-for="Task.TaskDescription" class="form-control" />
-                <span asp-validation-for="Task.TaskDescription" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="J_Acc_T.TaskCreatorAccountId" class="control-label"></label>
-                    <select asp-for="J_Acc_T.TaskCreatorAccountId" class="form-control" asp-items="ViewBag.TaskCreatorAccountId"></select>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="J_Acc_T.AccountId" class="control-label"></label>
-                <select asp-for="J_Acc_T.AccountId" name="AccountId" class="form-control" asp-items="ViewBag.TaskCreatorAccountId"></select>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Task.TaskTaskStateId" class="control-label"></label>
-                    <select asp-for="Task.TaskTaskStateId" class="form-control" asp-items="ViewBag.TaskList"></select>
-                </div>*@
-            Hidden values:
-            <div class="form-group">
-                <input name="ProjectID" value="@ViewBag.ProjectID" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+<form asp-action="Create" class="taskman-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Task.TaskName" class="control-label"></label>
+        <input asp-for="Task.TaskName" class="form-input" />
+        <span asp-validation-for="Task.TaskName" class="text-danger"></span>
     </div>
-</div>
+    @*<div class="form-group">
+            <label asp-for="Task.TaskCreatedDateTime" class="control-label"></label>
+            <input asp-for="Task.TaskCreatedDateTime" value="@DateTime.Now.ToString()" class="form-input" />
+            <span asp-validation-for="Task.TaskCreatedDateTime" class="text-danger"></span>
+        </div>*@
+    <div class="form-group">
+        <label asp-for="Task.TaskDescription" class="control-label"></label>
+        <input asp-for="Task.TaskDescription" class="form-input" />
+        <span asp-validation-for="Task.TaskDescription" class="text-danger"></span>
+    </div>
+    @*<div class="form-group">
+            <label asp-for="J_Acc_T.TaskCreatorAccountId" class="control-label"></label>
+            <select asp-for="J_Acc_T.TaskCreatorAccountId" class="form-input" asp-items="ViewBag.TaskCreatorAccountId"></select>
+        </div>*@
+    <div class="form-group">
+        <label asp-for="J_Acc_T.AccountId" class="control-label"></label>
+        <select asp-for="J_Acc_T.AccountId" name="AccountId" class="form-input" asp-items="ViewBag.TaskCreatorAccountId"></select>
+    </div>
+    @*<div class="form-group">
+            <label asp-for="Task.TaskTaskStateId" class="control-label"></label>
+            <select asp-for="Task.TaskTaskStateId" class="form-input" asp-items="ViewBag.TaskList"></select>
+        </div>*@
+    Hidden values:
+    <div class="form-group">
+        <input type="hidden" name="ProjectID" value="@ViewBag.ProjectID" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="form-input submit" />
+    </div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

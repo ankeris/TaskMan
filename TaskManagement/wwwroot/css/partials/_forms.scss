@@ -1,0 +1,66 @@
+﻿.taskman-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+
+    input, textarea, select {
+        width: 300px;
+    }
+
+    label {
+        color: white;
+    }
+
+    .submit {
+        text-align: center;
+    }
+}
+
+.form-input {
+    border: 1px solid white;
+    background-color: rgba(255,255,255, 30%);
+    border-radius: 20px;
+    padding: 5px 15px;
+    display: block;
+    margin: 5px;
+    text-align: left;
+    font-size: 18px;
+    color: #1f1f1f;
+    transition-duration: 0.25s;
+    font-weight: 300;
+
+    &::placeholder {
+        color: white;
+        font-size: 0.9em;
+    }
+
+    &:hover {
+        transition: 0.3s ease-out;
+        background-color: rgba(255,255,255, 50%);
+    }
+
+    &:focus {
+        transition: 0.3s ease-out;
+        background-color: rgba(255,255,255, 80%);
+        color: #1f1f1f;
+    }
+}
+
+.submit {
+    color: white;
+    border-color: lawngreen;
+
+    &:hover {
+        color: $success-green;
+
+        .shadow {
+            -moz-box-shadow: inset 0 0 15px $success-green;
+            -webkit-box-shadow: inset 0 0 15px $success-green;
+            box-shadow: inset 0 0 15px $success-green;
+        }
+
+        background-color: rgba($blue, 80%);
+    }
+}

@@ -1,4 +1,21 @@
-﻿@keyframes bounce {
+﻿.error-box {
+    color: red;
+    padding: 10px;
+}
+
+.error-shake {
+    animation: shake 0.2s;
+    animation-direction: alternate;
+    animation-iteration-count: 2;
+}
+
+.error-bounce {
+    animation: bounce 0.4s;
+    animation-direction: alternate;
+    animation-iteration-count: 4;
+}
+
+@keyframes bounce {
     from {
         transform: translate3d(0, 0, 0);
     }
@@ -7,6 +24,25 @@
         transform: translate3d(0, -50px, 0);
     }
 }
+
+@keyframes shake {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    33% {
+        transform: translate3d(-20px, 0, 0);
+    }
+
+    66% {
+        transform: translate3d(20px, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 
 @keyframes backLeft {
     from {

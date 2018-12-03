@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<a class="button-back" asp-controller="Comment" asp-action="Back" asp-route-id="@Model.CommentId"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
 
 <h2>Delete</h2>
 
@@ -17,5 +18,4 @@
         <input type="hidden" asp-for="CommentId" />
         <input type="submit" value="Delete" class="btn btn-default" />
     </form>
-    <a asp-controller="Comment" asp-action="Back" asp-route-id="@Model.CommentId">Back to List</a>
 </div>

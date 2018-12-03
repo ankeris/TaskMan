@@ -1,6 +1,14 @@
 ﻿@model CommentCreateViewModel
 
+@if (ViewBag.errorMessage != null)
+{
+    <div class="error-box error-shake">@ViewBag.errorMessage</div>
+}
 <form asp-controller="Comment" asp-action="Create" asp-route-on="@Model.CommentOn" asp-route-id="@Model.ID">
-    <textarea class="form-control" type="text" name="CommentText" style="resize: none;"></textarea>
-    <input type="submit" value="Post" class="btn btn-default" />
+<textarea class="form-control form-input"
+          type="text" name="CommentText"
+          style="resize: none;"
+          placeholder="Leave a comment...">
+</textarea>
+    <input class="form-input submit" type="submit" value="Post" />
 </form>

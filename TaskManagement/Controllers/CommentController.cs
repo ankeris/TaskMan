@@ -24,8 +24,15 @@ namespace TaskManagement.Controllers
             {
                 return NotFound();
             }
+
             if (on == "Project")
             {
+                if (comm.CommentText == null)
+                {
+                    HttpContext.Session.SetString("errorMessage", "Comment has to include characters!");
+                    return RedirectToAction("Details", "Projects", new { id });
+                }
+
                 comm.CommentAccountId = HttpContext.Session.GetInt32("AccID");
                 comm.CommentProjectId = id;
                 comm.CommentTaskId = null;
@@ -36,6 +43,11 @@ namespace TaskManagement.Controllers
             }
             if (on == "Task")
             {
+                if (comm.CommentText == null)
+                {
+                    HttpContext.Session.SetString("errorMessage", "Comment has to include characters!");
+                    return RedirectToAction("Details", "Tasks", new { id });
+                }
                 comm.CommentAccountId = HttpContext.Session.GetInt32("AccID");
                 comm.CommentTaskId = id;
                 comm.CommentProjectId = null;

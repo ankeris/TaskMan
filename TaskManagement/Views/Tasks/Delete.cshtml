@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<a class="button-back" asp-controller="Projects" asp-action="Details" asp-route-id="@Model.TaskProjectId"><i class="fas fa-chevron-left"></i><span>Go back to Project</span></a>
 
 <h2>Delete</h2>
 
@@ -20,7 +21,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="TaskId" />
         <input type="hidden" name="ProjectID" value="@Model.TaskProjectId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.TaskProjectId">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-default" />
     </form>
 </div>

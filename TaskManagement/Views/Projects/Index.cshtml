@@ -1,6 +1,9 @@
 ﻿@model ProjectsPageViewModel
+@{
+    ViewData["Title"] = "Projects";
+}
 
-<h2>@Model.Company.CompanyName</h2>
+<h2 class="main-title">@Model.Company.CompanyName</h2>
 
 <section class="dashboard">
     @if (@Context.Session.GetInt32("RoleID") == 1)

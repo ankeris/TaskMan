@@ -39,6 +39,68 @@
     .information-box {
         list-style: none;
         padding: 0;
+
+        li {
+            margin: 10px 0;
+            color: white;
+        }
+    }
+}
+
+.three-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    width: 95%;
+
+    .three-items__item {
+        margin: 0 10px;
+    }
+
+    .add-project {
+        margin: 0 10px;
+    }
+
+    .add-button {
+        padding: 10px;
+        margin: 5px;
+
+        i {
+            font-size: 13pt;
+        }
+    }
+}
+
+.task-box {
+    list-style: none;
+    padding: 0;
+    width: 90%;
+    margin: 20px 10px;
+
+    .task-box__item {
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        background-color: rgba(255,255,255, 30%);
+        margin: 12px 0;
+        border-radius: 0 25px 25px 0;
+
+        .task-box__item--button {
+            padding: 10px 30px 10px 10px;
+            color: white;
+            display: block;
+
+            &:hover {
+                color: rgba($purple, 70%);
+                text-decoration: none;
+            }
+        }
+
+        .delete-task {
+            padding: 8px 10px;
+            margin-left: auto;
+        }
     }
 }
 

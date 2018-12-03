@@ -31,12 +31,12 @@
         }
 
         &:hover {
-            background-color: rgba(255,255,255, 70%);
+            background-color: rgba(255,255,255, 50%);
         }
 
         &:focus {
-            background-color: white;
-            color: black;
+            background-color: rgba(255,255,255, 80%);
+            color: #1f1f1f;
             width: 300px;
         }
     }

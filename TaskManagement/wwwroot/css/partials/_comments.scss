@@ -1,14 +1,27 @@
 ﻿
 .comments-list {
     list-style: none;
-    padding: 0;
     margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 20%);
 
     .comments-list__item {
         display: flex;
         align-items: center;
         flex-direction: row;
         align-content: stretch;
+
+        .comment-delete {
+            color: $error-red;
+            margin: 3px;
+            font-size: 15pt;
+
+            &:hover {
+                color: black;
+                transition: 0.3s ease-out;
+            }
+        }
 
         .person-info {
             width: 90px;
@@ -17,6 +30,7 @@
             margin: 5px auto;
             text-align: center;
             font-size: 0.8em;
+            color: white;
 
             .person-image {
                 background-color: white;
@@ -34,6 +48,7 @@
             padding: 5px;
             font-size: 0.8em;
             border-radius: 10px;
+            color: #1f1f1f;
         }
     }
 }

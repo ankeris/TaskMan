@@ -8,6 +8,7 @@ for details on configuring this project to bundle and minify static web assets. 
 @import 'partials/navbar';
 @import 'partials/dashboard';
 @import 'partials/comments';
+@import 'partials/forms';
 
 .app-background {
     font-family: montserrat;
@@ -35,17 +36,17 @@ for details on configuring this project to bundle and minify static web assets. 
     box-sizing: border-box;
 }
 
-.error-box {
-    color: red;
-    padding: 10px;
-    animation: bounce 0.4s;
-    animation-direction: alternate;
-    animation-iteration-count: 4;
-}
-
 footer {
     position: fixed;
     bottom: 0;
+}
+
+.body-content {
+    color: white;
+}
+
+.list-group {
+    color: #1f1f1f;
 }
 
 .button-back {

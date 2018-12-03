@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 @model TaskManagement.Models.Account
 @if (@Context.Session.GetString("Username") != null)
@@ -11,7 +11,7 @@ else
     <h2 class="main-title">Welcome to TaskMan</h2>
 
     <div class="login-screen">
-        <div class="error-box">@ViewBag.error</div>
+        <div class="error-box error-bounce">@ViewBag.error</div>
         <form asp-controller="Home" asp-action="Login" method="post">
             <input class="login-input" asp-for="AccountEmail" type="text" placeholder="Email" />
             <br />
