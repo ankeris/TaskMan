@@ -4,16 +4,31 @@
     ViewData["Title"] = "Details";
 }
 
+@if (@ViewBag.DeletedMessage != null)
+{
+    <h3 class="deletion-notification">@ViewBag.DeletedMessage</h3>
+}
+
 <a class="button-back" asp-controller="Projects" asp-action="Details" asp-route-id="@Model.Task.TaskProjectId"><i class="fas fa-chevron-left"></i><span>Go back to Project</span></a>
 <section class="dashboard split-window">
     <div class="window--left">
-        <h3 class="three-items_item">Task: @Model.Task.TaskName</h3>
+        <h3>Task: @Model.Task.TaskName</h3>
         <h5>Description:</h5>
         <div>@Model.Task.TaskDescription</div>
     </div>
     <div class="window--right">
         <ul class="information-box">
-            <li>Task State: <small>@Model.Task.TaskTaskState.TaskStateName</small></li>
+            <li>
+                <div class="two-items">
+                    <div class="item-left">Task State:</div>
+                    <div class="item-right">
+                        <form asp-controller="Tasks" asp-action="ChangeState" asp-route-id="@Model.Task.TaskId">
+                            <select name="TaskStateId" class="form-input" asp-items="ViewBag.StateList" onchange="this.form.submit()"></select>
+                            <input type="hidden" name="TaskId" value="@Model.Task.TaskId" />
+                        </form>
+                    </div>
+                </div>
+            </li>
             <li>Assignees:</li>
             <ul>
                 @foreach (Account acc in Model.Assignees)

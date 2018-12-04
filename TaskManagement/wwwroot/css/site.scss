@@ -41,12 +41,22 @@ footer {
     bottom: 0;
 }
 
+select {
+    color: $blue;
+}
+
 .body-content {
     color: white;
 }
 
 .list-group {
     color: #1f1f1f;
+}
+
+.disclaimer {
+    text-align: center;
+    font-size: 0.8em;
+    opacity: 0.7;
 }
 
 .button-back {
@@ -71,7 +81,4 @@ footer {
         animation-direction: alternate;
         animation-iteration-count: 2;
     }
-}
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
 }

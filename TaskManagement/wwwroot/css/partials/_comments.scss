@@ -4,18 +4,19 @@
     margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0,0,0, 20%);
+    background-color: rgba(255,255,255, 10%);
 
     .comments-list__item {
         display: flex;
         align-items: center;
+        align-content: flex-start;
         flex-direction: row;
-        align-content: stretch;
 
         .comment-delete {
-            color: $error-red;
+            color: $ms-blue;
             margin: 3px;
-            font-size: 15pt;
+            font-size: 10pt;
+            padding: 5px;
 
             &:hover {
                 color: black;
@@ -24,10 +25,9 @@
         }
 
         .person-info {
-            width: 90px;
+            flex-basis: 90px;
             display: flex;
             flex-direction: column;
-            margin: 5px auto;
             text-align: center;
             font-size: 0.8em;
             color: white;
@@ -42,9 +42,9 @@
         }
 
         .comment-details {
-            min-height: 40px;
-            flex-basis: 100%;
-            background-color: white;
+            min-height: 45px;
+            flex-basis: 78%;
+            background-color: rgba(255,255,255,90%);
             padding: 5px;
             font-size: 0.8em;
             border-radius: 10px;

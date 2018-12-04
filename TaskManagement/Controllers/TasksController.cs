@@ -34,7 +34,8 @@ namespace TaskManagement.Controllers
         public IActionResult Create(int? id)
         {
             ViewBag.ProjectID = id;
-            ViewData["TaskCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
+            ViewData["AccountsToChooseFrom"] = new SelectList(_context.Account.Where(a => a.AccountRoleId != 1), "AccountId", "AccountEmail");
+
             ViewData["TaskList"] = new SelectList(_context.TaskState, "TaskStateId", "TaskStateName");
             return View();
         }
@@ -59,8 +60,7 @@ namespace TaskManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Projects", new { id = ProjectID });
             }
-            ViewData["TaskCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
-            ViewData["ProjectCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
+            ViewData["AccountsToChooseFrom"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
             return View(task);
         }
 
@@ -89,9 +89,11 @@ namespace TaskManagement.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id, int ProjectID)
         {
             var task = await _context.Task.FindAsync(id);
+            var comments = _context.Comment.Where(t => t.CommentTaskId == id);
             var j_task_acc = _context.JAccountTask.Where(t => t.TaskId == id);
             HttpContext.Session.SetString("DeletedMessage", task.TaskName + " has been successfully deleted");
 
+            _context.Comment.RemoveRange(comments);
             _context.JAccountTask.RemoveRange(j_task_acc);
             _context.Task.Remove(task);
             await _context.SaveChangesAsync();
@@ -118,6 +120,7 @@ namespace TaskManagement.Controllers
             ViewBag.DeletedMessage = DeletedMessage;
             var task = await _context.Task.FirstOrDefaultAsync(m => m.TaskId == id);
             task.TaskTaskState = await _context.TaskState.FirstOrDefaultAsync(t => t.TaskStateId == task.TaskTaskStateId);
+            ViewData["StateList"] = new SelectList(_context.TaskState, "TaskStateId", "TaskStateName", task.TaskTaskStateId);
 
             List<Account> assignees = await
                 (from acc in _context.Account
@@ -137,6 +140,17 @@ namespace TaskManagement.Controllers
             };
 
             return View(task_details_model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeState(int TaskStateId, int TaskId)
+        {
+            var task = await _context.Task.FindAsync(TaskId);
+            task.TaskTaskStateId = TaskStateId;
+            _context.Update(task);
+            await _context.SaveChangesAsync();
+            HttpContext.Session.SetString("DeletedMessage", "State has been changed successfully!");
+            return RedirectToAction("Details", "Tasks", new { id = TaskId });
         }
     }
 }

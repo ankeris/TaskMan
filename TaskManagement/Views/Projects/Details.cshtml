@@ -1,12 +1,9 @@
 ﻿@model ProjectDetailsViewModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
 @if (@ViewBag.DeletedMessage != null)
 {
-    <h2 class="deletion-notification">@ViewBag.DeletedMessage</h2>
+    <h3 class="deletion-notification">@ViewBag.DeletedMessage</h3>
 }
 <a class="button-back" asp-action="Index"><i class="fas fa-chevron-left"></i><span>Go back</span></a>
 

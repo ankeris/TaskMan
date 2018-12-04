@@ -17,10 +17,6 @@
         <link rel="stylesheet" href="~/dist/output.css" asp-append-version="true" />
     </environment>
 </head>
-@{
-    var rv = ViewContext.RouteData.Values;
-    var id = $"{rv["Controller"]}-{rv["Action"]}".ToLowerInvariant();
-}
 <body class="app-background">
     @if (@Context.Session.GetString("Username") != null)
     {
@@ -29,7 +25,7 @@
                 <nav class="main-navigation">
                     <div class="nav-items-box">
                         <ul class="nav-items-box__items">
-                            <li class="list-item"><a asp-area="" asp-controller="Home" ifp-action="Index">Home</a></li>
+                            <li class="list-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                             <li class="list-item"><a asp-area="" asp-controller="Projects" asp-action="Index">Projects</a></li>
                         </ul>
                     </div>

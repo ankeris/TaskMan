@@ -236,6 +236,9 @@ namespace TaskManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var comments = _context.Comment.Where(t => t.CommentProjectId == id);
+            _context.Comment.RemoveRange(comments);
+
             var project = await _context.Project.FindAsync(id);
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();

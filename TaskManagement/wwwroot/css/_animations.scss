@@ -3,6 +3,15 @@
     padding: 10px;
 }
 
+.deletion-notification {
+    background-color: rgba(255, 255, 255, 70%);
+    color: $ms-blue;
+    padding: 30px;
+    border-radius: 20px;
+    width: 50%;
+    animation: appear-to-right 0.5s;
+}
+
 .error-shake {
     animation: shake 0.2s;
     animation-direction: alternate;
@@ -43,6 +52,17 @@
     }
 }
 
+@keyframes appear-to-right {
+    from {
+        transform: translate(-100px, 0);
+        visibility: hidden;
+    }
+
+    to {
+        transform: translate(0, 0);
+        visibility: initial;
+    }
+}
 
 @keyframes backLeft {
     from {
@@ -51,5 +71,11 @@
 
     to {
         transform: translate(-15px, 0);
+    }
+}
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 600px) {
+    .deletion-notification {
+        width: 100%;
     }
 }
