@@ -30,12 +30,23 @@
                            asp-action="Details"
                            asp-route-id="@t.TaskId">Task<span> @i</span>:<span>&nbsp; @t.TaskName</span></a>
                     </span>
-
-                    <a class="delete-task" asp-controller="Tasks"
-                       asp-action="Delete"
-                       asp-route-id="@t.TaskId">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+                    @if (t.TaskTaskStateId == 6)
+                    {
+                        <i title="Done" class="task-done fas fa-check"></i>
+                        <a class="delete-task" asp-controller="Tasks"
+                           asp-action="Delete"
+                           asp-route-id="@t.TaskId">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="delete-task not-finished" asp-controller="Tasks"
+                           asp-action="Delete"
+                           asp-route-id="@t.TaskId">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    }
                 </li>
                 i++;
             }
@@ -44,7 +55,7 @@
     <div class="window--right">
         <ul class="information-box">
             <li>Deadline: @Model.Project.ProjectDeadline</li>
-            <li>Description:</li>
+            <li>Description: @Model.Project.ProjectDescription</li>
             @await Html.PartialAsync("_CommentSection", Model.Comments)
 
             @await Component.InvokeAsync("CommentCreate", new {

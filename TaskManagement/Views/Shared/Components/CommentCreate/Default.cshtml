@@ -4,7 +4,7 @@
 {
     <div class="error-box error-shake">@ViewBag.errorMessage</div>
 }
-<form asp-controller="Comment" asp-action="Create" asp-route-on="@Model.CommentOn" asp-route-id="@Model.ID">
+<form class="comment-form" asp-controller="Comment" asp-action="Create" asp-route-on="@Model.CommentOn" asp-route-id="@Model.ID">
 <textarea class="form-control form-input"
           type="text" name="CommentText"
           style="resize: none;"

@@ -20,6 +20,21 @@ namespace TaskManagement.Controllers
         private string AccName { get; set; }
         private string DeletedMessage { get; set; }
         private string errorMessage { get; set; }
+        public void GetNotifications()
+        {
+            if (HttpContext.Session.GetString("DeletedMessage") != null)
+            {
+                DeletedMessage = HttpContext.Session.GetString("DeletedMessage");
+                HttpContext.Session.Remove("DeletedMessage");
+            }
+            if (HttpContext.Session.GetString("errorMessage") != null)
+            {
+                errorMessage = HttpContext.Session.GetString("errorMessage");
+                HttpContext.Session.Remove("errorMessage");
+            }
+            ViewBag.errorMessage = errorMessage;
+            ViewBag.DeletedMessage = DeletedMessage;
+        }
 
         public List<Project> projects = new List<Project>();
         public List<Company> company = new List<Company>();
@@ -45,6 +60,7 @@ namespace TaskManagement.Controllers
                 ViewBag.error = "Account is inaccessible";
                 return RedirectToAction("Index", "Home", new { area = "Unlogged" });
             }
+
             // User Login successful!
             if (HttpContext.Session.GetString("AccID") != null)
             {
@@ -58,6 +74,8 @@ namespace TaskManagement.Controllers
                     System.Diagnostics.Debug.WriteLine("Log Exception: " + ex.Message);
                 }
                 company = _context.Company.FromSql("exec CompanyName @p_account_id", userid).ToList();
+
+                GetNotifications();
                 // Count all "Done" tasks and set DoneTasks object property
                 projects.ForEach(
                     prj => prj.DoneTasks =
@@ -96,20 +114,7 @@ namespace TaskManagement.Controllers
             {
                 return NotFound();
             }
-
-            if (HttpContext.Session.GetString("DeletedMessage") != null)
-            {
-                DeletedMessage = HttpContext.Session.GetString("DeletedMessage");
-                HttpContext.Session.Remove("DeletedMessage");
-            }
-            if (HttpContext.Session.GetString("errorMessage") != null)
-            {
-                errorMessage = HttpContext.Session.GetString("errorMessage");
-                HttpContext.Session.Remove("errorMessage");
-            }
-            ViewBag.errorMessage = errorMessage;
-            ViewBag.DeletedMessage = DeletedMessage;
-
+            GetNotifications();
             // Project details
             var project = await _context.Project
                 .Include(p => p.ProjectCreatorAccount)
@@ -242,6 +247,7 @@ namespace TaskManagement.Controllers
             var project = await _context.Project.FindAsync(id);
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
+            HttpContext.Session.SetString("DeletedMessage", $"Project {project.ProjectName} has been deleted!");
             return RedirectToAction(nameof(Index));
         }
 

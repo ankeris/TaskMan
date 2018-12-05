@@ -3,6 +3,11 @@
     ViewData["Title"] = "Projects";
 }
 
+@if (@ViewBag.DeletedMessage != null)
+{
+    <h3 class="deletion-notification">@ViewBag.DeletedMessage</h3>
+}
+
 <h2 class="main-title">@Model.Company.CompanyName</h2>
 
 <section class="dashboard">

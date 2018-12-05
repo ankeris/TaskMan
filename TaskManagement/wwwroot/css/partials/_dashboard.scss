@@ -106,6 +106,15 @@
 
         .delete-task {
             padding: 8px 10px;
+        }
+
+        .task-done {
+            padding: 8px;
+            margin-left: auto;
+            color: $success-green;
+        }
+
+        .not-finished {
             margin-left: auto;
         }
     }

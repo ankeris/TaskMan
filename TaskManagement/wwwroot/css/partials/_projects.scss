@@ -42,10 +42,23 @@
 
         .admin-edit {
             background-color: $blue;
+
+            &:hover {
+                background-color: turquoise;
+                transition: 0.3s ease-out;
+                text-decoration: none;
+            }
         }
 
         .admin-delete {
-            background-color: $error-red;
+            background-color: rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease-out;
+
+            &:hover {
+                background-color: $error-red;
+                transition: 0.3s ease-out;
+                text-decoration: none;
+            }
         }
     }
 }
