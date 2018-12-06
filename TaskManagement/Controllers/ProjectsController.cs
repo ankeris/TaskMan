@@ -20,6 +20,21 @@ namespace TaskManagement.Controllers
         private string AccName { get; set; }
         private string DeletedMessage { get; set; }
         private string errorMessage { get; set; }
+        private bool accountLoggedIn { get; set; }
+        public void AuthorizeUser()
+        {
+            if (HttpContext.Session.GetInt32("AccID") != null)
+            {
+                AccName = HttpContext.Session.GetString("Username");
+                AccID = HttpContext.Session.GetInt32("AccID");
+                accountLoggedIn = true;
+            }
+            else
+            {
+                ViewBag.error = "Account is inaccessible";
+                accountLoggedIn = false;
+            }
+        }
         public void GetNotifications()
         {
             if (HttpContext.Session.GetString("DeletedMessage") != null)
@@ -35,7 +50,6 @@ namespace TaskManagement.Controllers
             ViewBag.errorMessage = errorMessage;
             ViewBag.DeletedMessage = DeletedMessage;
         }
-
         public List<Project> projects = new List<Project>();
         public List<Company> company = new List<Company>();
 
@@ -50,19 +64,9 @@ namespace TaskManagement.Controllers
         // GET: Projects
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32("AccID") != null)
-            {
-                AccName = HttpContext.Session.GetString("Username");
-                AccID = HttpContext.Session.GetInt32("AccID");
-            }
-            else
-            {
-                ViewBag.error = "Account is inaccessible";
-                return RedirectToAction("Index", "Home", new { area = "Unlogged" });
-            }
-
+            AuthorizeUser();
             // User Login successful!
-            if (HttpContext.Session.GetString("AccID") != null)
+            if (accountLoggedIn)
             {
                 SqlParameter userid = new SqlParameter("@p_account_id", AccID);
                 try
@@ -103,13 +107,14 @@ namespace TaskManagement.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home", new { area = "Unlogged" });
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
             }
         }
-
+        //
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            AuthorizeUser();
             if (id == null)
             {
                 return NotFound();
@@ -139,14 +144,29 @@ namespace TaskManagement.Controllers
                 return NotFound();
             }
 
-            return View(details_model);
+            if (accountLoggedIn)
+            {
+                return View(details_model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // GET: Projects/Create
         public IActionResult Create()
         {
+            AuthorizeUser();
             ViewData["ProjectCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail");
-            return View();
+            if (accountLoggedIn)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // POST: Projects/Create
@@ -154,6 +174,7 @@ namespace TaskManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectCreatedDateTime,ProjectDeadline,ProjectDescription,ProjectCreatorAccountId,ProjectActive,ProjectEndDateTime")] Project project)
         {
+            AuthorizeUser();
             if (ModelState.IsValid)
             {
                 project.ProjectCreatedDateTime = DateTime.Now;
@@ -169,6 +190,7 @@ namespace TaskManagement.Controllers
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            AuthorizeUser();
             if (id == null)
             {
                 return NotFound();
@@ -180,7 +202,15 @@ namespace TaskManagement.Controllers
                 return NotFound();
             }
             ViewData["ProjectCreatorAccountId"] = new SelectList(_context.Account, "AccountId", "AccountEmail", project.ProjectCreatorAccountId);
-            return View(project);
+
+            if (accountLoggedIn)
+            {
+                return View(project);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // POST: Projects/Edit/5
@@ -220,6 +250,7 @@ namespace TaskManagement.Controllers
         // GET: Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            AuthorizeUser();
             if (id == null)
             {
                 return NotFound();
@@ -233,7 +264,14 @@ namespace TaskManagement.Controllers
                 return NotFound();
             }
 
-            return View(project);
+            if (accountLoggedIn)
+            {
+                return View(project);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // POST: Projects/Delete/5

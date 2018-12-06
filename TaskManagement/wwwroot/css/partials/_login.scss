@@ -3,6 +3,12 @@
     text-align: center;
 }
 
+.unlogged-notification {
+    width: 100%;
+    color: $error-red;
+    margin: 20px 0;
+}
+
 .login-screen {
     max-width: 500px;
     margin: 0 auto;

@@ -17,7 +17,20 @@ namespace TaskManagement.Controllers
         private readonly TaskManagementContext _context;
         private string DeletedMessage { get; set; }
         private string errorMessage { get; set; }
-
+        //Auth
+        private bool accountLoggedIn { get; set; }
+        public void AuthorizeUser()
+        {
+            if (HttpContext.Session.GetInt32("AccID") != null)
+            {
+                accountLoggedIn = true;
+            }
+            else
+            {
+                ViewBag.error = "Account is inaccessible";
+                accountLoggedIn = false;
+            }
+        }
         TaskDetailsViewModel task_details_model = new TaskDetailsViewModel();
 
         public TasksController(TaskManagementContext context)
@@ -25,19 +38,23 @@ namespace TaskManagement.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         // GET: Projects/Create
         public IActionResult Create(int? id)
         {
+            AuthorizeUser();
             ViewBag.ProjectID = id;
             ViewData["AccountsToChooseFrom"] = new SelectList(_context.Account.Where(a => a.AccountRoleId != 1), "AccountId", "AccountEmail");
 
             ViewData["TaskList"] = new SelectList(_context.TaskState, "TaskStateId", "TaskStateName");
-            return View();
+
+            if (accountLoggedIn)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         [HttpPost]
@@ -67,6 +84,8 @@ namespace TaskManagement.Controllers
         // Only render the View for Delete
         public async Task<IActionResult> Delete(int? id)
         {
+            AuthorizeUser();
+
             if (id == null)
             {
                 return NotFound();
@@ -80,7 +99,14 @@ namespace TaskManagement.Controllers
                 return NotFound();
             }
 
-            return View(task);
+            if (accountLoggedIn)
+            {
+                return View(task);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // Actually Delete Task
@@ -102,6 +128,8 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            AuthorizeUser();
+
             if (id == null)
             {
                 return NotFound();
@@ -139,7 +167,14 @@ namespace TaskManagement.Controllers
                 Comments = comments
             };
 
-            return View(task_details_model);
+            if (accountLoggedIn)
+            {
+                return View(task_details_model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         [HttpPost]

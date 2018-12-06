@@ -11,6 +11,19 @@ namespace TaskManagement.Controllers
     public class CommentController : Controller
     {
         private readonly TaskManagementContext _context;
+        private bool accountLoggedIn { get; set; }
+        public void AuthorizeUser()
+        {
+            if (HttpContext.Session.GetInt32("AccID") != null)
+            {
+                accountLoggedIn = true;
+            }
+            else
+            {
+                ViewBag.error = "Account is inaccessible";
+                accountLoggedIn = false;
+            }
+        }
 
         public CommentController(TaskManagementContext context)
         {
@@ -20,11 +33,6 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("CommentText")] Comment comm, int id, string on)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             if (on == "Project")
             {
                 if (comm.CommentText == null)
@@ -62,6 +70,7 @@ namespace TaskManagement.Controllers
         // Only render the View for Delete
         public IActionResult Delete(int? id)
         {
+            AuthorizeUser();
             if (id == null) { return NotFound(); }
 
             Comment comm = _context.Comment.Where(tsk => tsk.CommentId == id).FirstOrDefault();
@@ -69,7 +78,14 @@ namespace TaskManagement.Controllers
 
             if (comm == null) { return NotFound(); }
 
-            return View(comm);
+            if (accountLoggedIn)
+            {
+                return View(comm);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Unlogged = 1 });
+            }
         }
 
         // Actually Delete Task

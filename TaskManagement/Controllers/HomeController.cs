@@ -15,8 +15,12 @@ namespace TaskManagement.Controllers
         [Route("")]
         [Route("index")]
         [Route("~/")]
-        public IActionResult Index()
+        public IActionResult Index(int? Unlogged)
         {
+            if (Unlogged == 1)
+            {
+                ViewBag.Unlogged = "Please log in to access the page";
+            }
             return View();
         }
 

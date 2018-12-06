@@ -173,6 +173,12 @@ for details on configuring this project to bundle and minify static web assets. 
   text-align: center;
 }
 
+.unlogged-notification {
+  width: 100%;
+  color: #C41E3A;
+  margin: 20px 0;
+}
+
 .login-screen {
   max-width: 500px;
   margin: 0 auto;
