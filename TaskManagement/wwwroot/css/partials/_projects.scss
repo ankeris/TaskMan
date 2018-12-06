@@ -11,6 +11,10 @@
         border-radius: 25px;
         transition-duration: 0.3s;
 
+        @media only screen and (max-width: 650px) {
+            flex-direction: column;
+        }
+
         &:hover {
             background-color: rgba($purple, 40%);
             transition-duration: 0.3s;
@@ -21,10 +25,6 @@
             flex-basis: 33%;
             color: white;
             text-align: center;
-        }
-
-        .progress-wrap {
-            flex-basis: 100%;
         }
     }
 

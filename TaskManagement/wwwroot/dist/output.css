@@ -89,6 +89,11 @@ for details on configuring this project to bundle and minify static web assets. 
   border-radius: 25px;
   transition-duration: 0.3s;
 }
+@media only screen and (max-width: 650px) {
+  .project-list-parent .project-list__item-box {
+    flex-direction: column;
+  }
+}
 .project-list-parent .project-list__item-box:hover {
   background-color: rgba(133, 61, 204, 0.4);
   transition-duration: 0.3s;
@@ -98,9 +103,6 @@ for details on configuring this project to bundle and minify static web assets. 
   flex-basis: 33%;
   color: white;
   text-align: center;
-}
-.project-list-parent .project-list__item-box .progress-wrap {
-  flex-basis: 100%;
 }
 .project-list-parent .admin-buttons {
   flex-basis: 7%;
@@ -235,6 +237,11 @@ for details on configuring this project to bundle and minify static web assets. 
   flex-flow: row;
   align-content: space-between;
   margin: 10px 0;
+}
+@media only screen and (max-width: 473px) {
+  .main-nav-wrapper .main-navigation {
+    flex-flow: column;
+  }
 }
 .main-nav-wrapper .main-navigation .nav-items-box, .main-nav-wrapper .main-navigation .nav-user-box {
   flex-basis: 50%;
